@@ -31,36 +31,220 @@ const locationSuggestions = [
 
 const providerMap = {
   Flights: [
-    { provider: "Skyline Travel", price: 249, duration: "2h 35m", rating: 4.6, seats: 9 },
-    { provider: "CloudWing", price: 312, duration: "3h 20m", rating: 4.8, seats: 5 },
+    {
+      provider: "Skyline Travel",
+      price: 249,
+      duration: "2h 35m",
+      rating: 4.6,
+      seats: 9,
+      tags: ["economy", "direct", "city break", "short haul"],
+    },
+    {
+      provider: "CloudWing",
+      price: 312,
+      duration: "3h 20m",
+      rating: 4.8,
+      seats: 5,
+      tags: ["premium", "flexible", "business"],
+    },
+    {
+      provider: "SunJet",
+      price: 198,
+      duration: "2h 50m",
+      rating: 4.4,
+      seats: 11,
+      tags: ["budget", "carry-on", "weekend"],
+    },
   ],
   Trains: [
-    { provider: "BlueRail Express", price: 189, duration: "3h 10m", rating: 4.4, seats: 4 },
-    { provider: "EuroTrack", price: 162, duration: "3h 45m", rating: 4.5, seats: 10 },
+    {
+      provider: "BlueRail Express",
+      price: 189,
+      duration: "3h 10m",
+      rating: 4.4,
+      seats: 4,
+      tags: ["fast", "wifi", "city center"],
+    },
+    {
+      provider: "EuroTrack",
+      price: 162,
+      duration: "3h 45m",
+      rating: 4.5,
+      seats: 10,
+      tags: ["quiet car", "first class", "panoramic"],
+    },
+    {
+      provider: "MetroLine",
+      price: 139,
+      duration: "4h 05m",
+      rating: 4.1,
+      seats: 14,
+      tags: ["budget", "regional"],
+    },
   ],
   Buses: [
-    { provider: "MetroMove", price: 142, duration: "5h 20m", rating: 4.2, seats: 7 },
-    { provider: "RoadRunner", price: 118, duration: "5h 55m", rating: 4.1, seats: 12 },
+    {
+      provider: "MetroMove",
+      price: 142,
+      duration: "5h 20m",
+      rating: 4.2,
+      seats: 7,
+      tags: ["overnight", "usb", "recliner"],
+    },
+    {
+      provider: "RoadRunner",
+      price: 118,
+      duration: "5h 55m",
+      rating: 4.1,
+      seats: 12,
+      tags: ["budget", "express"],
+    },
+    {
+      provider: "CityLink",
+      price: 132,
+      duration: "5h 05m",
+      rating: 4.0,
+      seats: 18,
+      tags: ["eco", "downtown"],
+    },
   ],
   "Car rentals": [
-    { provider: "DriveNow", price: 75, duration: "Daily", rating: 4.3, seats: 6 },
-    { provider: "CityKeys", price: 92, duration: "Daily", rating: 4.6, seats: 4 },
+    {
+      provider: "DriveNow",
+      price: 75,
+      duration: "Daily",
+      rating: 4.3,
+      seats: 6,
+      tags: ["compact", "automatic", "airport pickup"],
+    },
+    {
+      provider: "CityKeys",
+      price: 92,
+      duration: "Daily",
+      rating: 4.6,
+      seats: 4,
+      tags: ["suv", "free cancellation"],
+    },
+    {
+      provider: "RoadTrip",
+      price: 68,
+      duration: "Daily",
+      rating: 4.1,
+      seats: 5,
+      tags: ["budget", "manual", "fuel efficient"],
+    },
   ],
   Ferries: [
-    { provider: "Coastal Lines", price: 215, duration: "4h 00m", rating: 4.7, seats: 12 },
-    { provider: "HarborLink", price: 198, duration: "4h 30m", rating: 4.5, seats: 8 },
+    {
+      provider: "Coastal Lines",
+      price: 215,
+      duration: "4h 00m",
+      rating: 4.7,
+      seats: 12,
+      tags: ["sea view", "cabin", "pets"],
+    },
+    {
+      provider: "HarborLink",
+      price: 198,
+      duration: "4h 30m",
+      rating: 4.5,
+      seats: 8,
+      tags: ["family", "snacks"],
+    },
+    {
+      provider: "IslandWay",
+      price: 176,
+      duration: "5h 10m",
+      rating: 4.3,
+      seats: 16,
+      tags: ["day trip", "budget"],
+    },
   ],
   Bikes: [
-    { provider: "PedalPro", price: 28, duration: "Per hour", rating: 4.6, seats: 20 },
-    { provider: "CycleNow", price: 32, duration: "Per hour", rating: 4.4, seats: 15 },
+    {
+      provider: "PedalPro",
+      price: 28,
+      duration: "Per hour",
+      rating: 4.6,
+      seats: 20,
+      tags: ["city bike", "helmet included"],
+    },
+    {
+      provider: "CycleNow",
+      price: 32,
+      duration: "Per hour",
+      rating: 4.4,
+      seats: 15,
+      tags: ["e-bike", "guided"],
+    },
+    {
+      provider: "TrailRide",
+      price: 36,
+      duration: "Per hour",
+      rating: 4.2,
+      seats: 10,
+      tags: ["mountain", "trail"],
+    },
   ],
   Taxis: [
-    { provider: "CityCab", price: 34, duration: "20 min", rating: 4.3, seats: 4 },
-    { provider: "RapidRide", price: 41, duration: "18 min", rating: 4.5, seats: 5 },
+    {
+      provider: "CityCab",
+      price: 34,
+      duration: "20 min",
+      rating: 4.3,
+      seats: 4,
+      tags: ["airport", "standard"],
+    },
+    {
+      provider: "RapidRide",
+      price: 41,
+      duration: "18 min",
+      rating: 4.5,
+      seats: 5,
+      tags: ["premium", "priority pickup"],
+    },
+    {
+      provider: "MetroTaxi",
+      price: 29,
+      duration: "25 min",
+      rating: 4.1,
+      seats: 4,
+      tags: ["budget", "shared"],
+    },
   ],
   Stays: [
-    { provider: "Blue Harbor Hotel", price: 140, duration: "Per night", rating: 4.5, seats: 6 },
-    { provider: "Urban Loft Apartments", price: 122, duration: "Per night", rating: 4.4, seats: 4 },
+    {
+      provider: "Blue Harbor Hotel",
+      price: 140,
+      duration: "Per night",
+      rating: 4.5,
+      seats: 6,
+      tags: ["hotel", "breakfast", "spa"],
+    },
+    {
+      provider: "Urban Loft Apartments",
+      price: 122,
+      duration: "Per night",
+      rating: 4.4,
+      seats: 4,
+      tags: ["apartment", "kitchen", "central"],
+    },
+    {
+      provider: "Seaside House",
+      price: 176,
+      duration: "Per night",
+      rating: 4.7,
+      seats: 8,
+      tags: ["house", "family", "beach"],
+    },
+    {
+      provider: "Vintage BNB",
+      price: 98,
+      duration: "Per night",
+      rating: 4.2,
+      seats: 3,
+      tags: ["bnb", "budget", "historic"],
+    },
   ],
 };
 
@@ -77,6 +261,8 @@ const integrationProviders = [
 ];
 
 const formatDuration = (duration) => `Estimated duration: ${duration}`;
+
+const normalizeValue = (value) => value.toLowerCase();
 
 const updateLocationOptions = (value) => {
   const query = value.trim().toLowerCase();
@@ -109,6 +295,37 @@ const getSelectedPropertyTypes = () => {
   )
     .filter((checkbox) => checkbox.checked)
     .map((checkbox) => checkbox.value);
+};
+
+const getSearchQuery = (category) => {
+  const destination = document.querySelector("#destination").value.trim();
+  const routeFrom = document.querySelector("#routeFrom").value.trim();
+  const routeTo = document.querySelector("#routeTo").value.trim();
+  const stayLocation = document.querySelector("#stayLocation").value.trim();
+  const taxiPickup = document.querySelector("#taxiPickup").value.trim();
+  const taxiDropoff = document.querySelector("#taxiDropoff").value.trim();
+  const carPickup = document.querySelector("#carPickup").value.trim();
+  const carDropoff = document.querySelector("#carDropoff").value.trim();
+  const bikePickup = document.querySelector("#bikePickup").value.trim();
+
+  const queryParts = [destination];
+  if (["Flights", "Trains", "Buses", "Ferries"].includes(category)) {
+    queryParts.push(routeFrom, routeTo);
+  }
+  if (category === "Stays") {
+    queryParts.push(stayLocation);
+  }
+  if (category === "Taxis") {
+    queryParts.push(taxiPickup, taxiDropoff);
+  }
+  if (category === "Car rentals") {
+    queryParts.push(carPickup, carDropoff);
+  }
+  if (category === "Bikes") {
+    queryParts.push(bikePickup);
+  }
+
+  return queryParts.filter(Boolean).join(" ").trim();
 };
 
 const buildSearchSummary = (category, destination, travelers) => {
@@ -165,6 +382,10 @@ const buildSearchSummary = (category, destination, travelers) => {
 
 const renderResults = (category, destination, travelers) => {
   const results = providerMap[category] || providerMap.Flights;
+  const searchQuery = getSearchQuery(category);
+  const queryTokens = searchQuery
+    ? normalizeValue(searchQuery).split(/\s+/).filter(Boolean)
+    : [];
   const sortedResults = [...results].sort((a, b) => {
     if (sortBy.value === "price") return a.price - b.price;
     if (sortBy.value === "duration") {
@@ -173,10 +394,32 @@ const renderResults = (category, destination, travelers) => {
     return b.rating - a.rating;
   });
 
+  const filteredResults = queryTokens.length
+    ? sortedResults.filter((result) => {
+        const searchable = normalizeValue(
+          [result.provider, ...(result.tags || [])].join(" ")
+        );
+        return queryTokens.some((token) => searchable.includes(token));
+      })
+    : sortedResults;
+
   const summaryParts = buildSearchSummary(category, destination, travelers);
 
   resultsGrid.innerHTML = "";
-  sortedResults.forEach((result) => {
+  if (!filteredResults.length) {
+    const card = document.createElement("div");
+    card.className = "result-card empty";
+    card.innerHTML = `
+      <h3>No matches yet</h3>
+      <div class="meta">
+        Try another keyword or adjust your filters to see more results.
+      </div>
+    `;
+    resultsGrid.appendChild(card);
+    return;
+  }
+
+  filteredResults.forEach((result) => {
     const card = document.createElement("div");
     card.className = "result-card";
     card.innerHTML = `
@@ -184,6 +427,7 @@ const renderResults = (category, destination, travelers) => {
       <div class="price">$${result.price}</div>
       <div class="meta">${category}</div>
       ${summaryParts.map((item) => `<div class="meta">${item}</div>`).join("")}
+      <div class="meta">Highlights: ${(result.tags || []).join(", ")}</div>
       <div class="meta">${formatDuration(result.duration)}</div>
       <div class="meta">Rating: ${result.rating} ★</div>
       <div class="meta">Seats left for ${travelers}: ${Math.max(
@@ -236,9 +480,9 @@ searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const category = categorySelect.value;
   const travelers = Number(document.querySelector("#travelers").value);
-  const destination = getDestinationValue(category);
+  const destination = getDestinationValue(category) || "Any location";
 
-  if (!category || !destination) return;
+  if (!category) return;
 
   showLoading();
   setTimeout(() => {

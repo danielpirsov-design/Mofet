@@ -231,6 +231,15 @@ main {
   font-size: 0.9rem;
 }
 
+.result-card.empty {
+  text-align: center;
+  background: #f3f9ff;
+}
+
+.result-card.empty h3 {
+  color: var(--primary-dark);
+}
+
 .integration-note {
   margin-top: 2rem;
   background: var(--card);
