@@ -134,6 +134,17 @@ h1 {
   background: #f9fcff;
 }
 
+.status-pill {
+  margin-top: 1.2rem;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--primary-dark);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
 main {
   padding: 3rem 6vw 4rem;
 }
@@ -163,6 +174,33 @@ main {
   gap: 1.5rem;
 }
 
+.results-state {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  background: var(--accent);
+  border-radius: 0.9rem;
+  padding: 0.9rem 1.2rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.95rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+  border-radius: 1rem;
+  border: 1px dashed #c9e6fb;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
 .result-card {
   background: var(--card);
   padding: 1.5rem;
@@ -186,6 +224,38 @@ main {
 .features {
   margin-top: 4rem;
   text-align: center;
+}
+
+.filters {
+  margin-top: 4rem;
+}
+
+.section-subhead {
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+.filters-grid {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.filters-grid article {
+  background: var(--card);
+  padding: 1.6rem;
+  border-radius: 1rem;
+  box-shadow: 0 12px 24px rgba(15, 45, 75, 0.05);
+}
+
+.filters-grid ul {
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
 }
 
 .features-grid {
@@ -253,5 +323,10 @@ footer {
 
   .hero {
     padding: 2rem 6vw 3rem;
+  }
+
+  .results-state {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
