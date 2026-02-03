@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MoFeT - Travel Price Comparison</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <nav class="nav">
+          <div class="logo">MoFeT</div>
+          <button class="nav-cta">Start Searching</button>
+        </nav>
+        <div class="hero-content">
+          <div class="hero-text">
+            <p class="eyebrow">Smart price comparison in one place</p>
+            <h1>Looking for the best way to get there?</h1>
+            <p class="subtitle">
+              We aggregate prices across providers for flights, trains, buses, car rentals,
+              ferries, bikes, hotels, homes, and BNB.
+            </p>
+            <div class="search-bar">
+              <input
+                type="text"
+                placeholder="Where do you want to go?"
+                aria-label="Search destination"
+                id="searchInput"
+              />
+              <button id="searchButton">Search</button>
+            </div>
+            <div class="hero-tags">
+              <span>✈️ Flights</span>
+              <span>🚆 Trains</span>
+              <span>🚌 Buses</span>
+              <span>🚗 Car rental</span>
+              <span>⛴️ Ferries</span>
+              <span>🚲 Bikes</span>
+              <span>🏨 Hotels</span>
+              <span>🏡 BNB</span>
+            </div>
+          </div>
+          <div class="hero-card">
+            <h2>Fast price overview</h2>
+            <p>Pick dates and we will sort offers by price, time, and rating.</p>
+            <ul>
+              <li>Real-time comparison across providers</li>
+              <li>Smart price alerts</li>
+              <li>Mix-and-match transport options</li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <section class="results" aria-live="polite">
+        <h2>What is new?</h2>
+        <div class="results-grid">
+          <article>
+            <h3>Smarter flight connections</h3>
+            <p>Find value connections with optimized layover times.</p>
+          </article>
+          <article>
+            <h3>Train and bus coverage</h3>
+            <p>Compare public transport operators across Europe.</p>
+          </article>
+          <article>
+            <h3>Hotels and homes</h3>
+            <p>Bundle stays with your trip for one clear budget.</p>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <div class="loading" id="loadingOverlay" aria-hidden="true">
+      <div class="loading-card">
+        <video
+          class="loading-video"
+          autoplay
+          loop
+          muted
+          playsinline
+          aria-label="Loading video"
+        >
+          <source src="assets/loading-walk.mp4" type="video/mp4" />
+          Your browser does not support video playback.
+        </video>
+        <p>We are finding the best price for you...</p>
+        <button id="closeLoading">Close</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
