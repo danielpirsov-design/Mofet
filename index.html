@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mofet Travel Finder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <nav class="nav">
+          <div class="brand">Mofet</div>
+          <button class="primary-button">Start Searching</button>
+        </nav>
+        <div class="hero-content">
+          <div>
+            <p class="eyebrow">One search. Every route.</p>
+            <h1>Compare prices across every travel category in one place.</h1>
+            <p class="subhead">
+              Flights, trains, buses, car rentals, ferries, bikes, and stays — all
+              grouped together with clear pricing and availability.
+            </p>
+            <div class="hero-tags">
+              <span>✈️ Flights</span>
+              <span>🚆 Trains</span>
+              <span>🚌 Buses</span>
+              <span>🚗 Car rentals</span>
+              <span>⛴️ Ferries</span>
+              <span>🚲 Bikes</span>
+              <span>🏡 BNB stays</span>
+            </div>
+          </div>
+          <div class="hero-card">
+            <h2>Search now</h2>
+            <p>Pick a category, travelers, and a destination to start comparing.</p>
+            <form id="searchForm" class="search-form">
+              <label>
+                Category
+                <select id="category" required>
+                  <option value="">Choose a category</option>
+                  <option value="Flights">Flights</option>
+                  <option value="Trains">Trains</option>
+                  <option value="Buses">Buses</option>
+                  <option value="Car rentals">Car rentals</option>
+                  <option value="Ferries">Ferries</option>
+                  <option value="Bikes">Bikes</option>
+                  <option value="BNB stays">BNB stays</option>
+                </select>
+              </label>
+              <label>
+                Travelers
+                <input id="travelers" type="number" min="1" max="12" value="2" required />
+              </label>
+              <label>
+                Destination
+                <input
+                  id="destination"
+                  type="text"
+                  placeholder="e.g. Berlin, Paris, Rome"
+                  required
+                />
+              </label>
+              <button class="primary-button" type="submit">Find deals</button>
+            </form>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="results">
+          <div class="results-header">
+            <div>
+              <h2>Live comparison</h2>
+              <p>We aggregate the best options and show the full breakdown.</p>
+            </div>
+            <div class="filter">
+              <label>
+                Sort by
+                <select id="sortBy">
+                  <option value="price">Lowest price</option>
+                  <option value="duration">Shortest duration</option>
+                  <option value="rating">Best rating</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <div id="resultsGrid" class="results-grid"></div>
+        </section>
+
+        <section class="features">
+          <h2>Why travelers love Mofet</h2>
+          <div class="features-grid">
+            <article>
+              <h3>All transport types</h3>
+              <p>See prices for rail, road, sea, and air in one unified feed.</p>
+            </article>
+            <article>
+              <h3>Clear breakdowns</h3>
+              <p>Compare total costs, journey times, and provider ratings.</p>
+            </article>
+            <article>
+              <h3>Fast availability</h3>
+              <p>Instantly see which options still have seats for your group.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+      <div class="loading-card">
+        <video
+          id="loadingVideo"
+          src="assets/loading-walk.mp4"
+          autoplay
+          loop
+          muted
+          playsinline
+        ></video>
+        <div>
+          <h3>Searching every provider…</h3>
+          <p>We are gathering the freshest prices for you.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div>
+        <strong>Mofet</strong>
+        <p>Beautiful light-blue travel comparison built for clarity.</p>
+      </div>
+      <div>
+        <p>Email: hello@mofet.app</p>
+        <p>Support: 24/7 global travel help</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
