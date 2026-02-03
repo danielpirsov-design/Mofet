@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mofet Travel Finder</title>
+    <title>Mofet Global Travel Finder</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -15,11 +15,11 @@
         </nav>
         <div class="hero-content">
           <div>
-            <p class="eyebrow">One search. Every route.</p>
-            <h1>Compare prices across every travel category in one place.</h1>
+            <p class="eyebrow">Global search. One platform.</p>
+            <h1>Compare worldwide prices across every travel category in one place.</h1>
             <p class="subhead">
               Flights, trains, buses, car rentals, ferries, bikes, and stays — all
-              grouped together with clear pricing and availability.
+              grouped together with clear pricing, availability, and global coverage.
             </p>
             <div class="hero-tags">
               <span>✈️ Flights</span>
@@ -29,10 +29,11 @@
               <span>⛴️ Ferries</span>
               <span>🚲 Bikes</span>
               <span>🏡 BNB stays</span>
+              <span>🌍 Global coverage</span>
             </div>
           </div>
           <div class="hero-card">
-            <h2>Search now</h2>
+            <h2>Search worldwide</h2>
             <p>Pick a category, travelers, and a destination to start comparing.</p>
             <form id="searchForm" class="search-form">
               <label>
@@ -58,11 +59,23 @@
                   id="destination"
                   type="text"
                   placeholder="e.g. Berlin, Paris, Rome"
+                  list="destinationSuggestions"
                   required
                 />
+                <datalist id="destinationSuggestions">
+                  <option value="Paris"></option>
+                  <option value="London"></option>
+                  <option value="Dubai"></option>
+                  <option value="New York"></option>
+                  <option value="Rome"></option>
+                  <option value="Berlin"></option>
+                  <option value="Tokyo"></option>
+                  <option value="Singapore"></option>
+                </datalist>
               </label>
-              <button class="primary-button" type="submit">Find deals</button>
+              <button class="primary-button" type="submit">Find global deals</button>
             </form>
+            <div class="status-pill" id="statusPill">Ready for your search.</div>
           </div>
         </div>
       </header>
@@ -71,8 +84,8 @@
         <section class="results">
           <div class="results-header">
             <div>
-              <h2>Live comparison</h2>
-              <p>We aggregate the best options and show the full breakdown.</p>
+              <h2>Live global comparison</h2>
+              <p>We aggregate the best options worldwide and show the full breakdown.</p>
             </div>
             <div class="filter">
               <label>
@@ -85,7 +98,139 @@
               </label>
             </div>
           </div>
+          <div class="results-state" id="resultsState">
+            <div>
+              <strong>Status:</strong> <span id="resultsStatus">Ready</span>
+            </div>
+            <div>
+              <strong>Current search:</strong>
+              <span id="resultsSummary">Flights · Paris · 2 travelers</span>
+            </div>
+          </div>
+          <div id="emptyState" class="empty-state">
+            <h3>No results yet</h3>
+            <p>Run a search to see live global options appear here.</p>
+          </div>
           <div id="resultsGrid" class="results-grid"></div>
+        </section>
+
+        <section class="filters">
+          <h2>Professional filters for every category</h2>
+          <p class="section-subhead">
+            Built-in filters help you compare providers across air, land, sea, and stays.
+          </p>
+          <div class="filters-grid">
+            <article>
+              <h3>✈️ Flights</h3>
+              <ul>
+                <li>💰 Price range</li>
+                <li>🕒 Departure / arrival time</li>
+                <li>⏱️ Flight duration</li>
+                <li>🔁 Direct vs. connection</li>
+                <li>🧳 Baggage included</li>
+                <li>💺 Cabin class (Economy / Business / First)</li>
+                <li>✈️ Airline</li>
+                <li>📍 Departure / destination airport</li>
+                <li>❌ Flexible change / cancellation</li>
+                <li>⭐ Traveler rating</li>
+              </ul>
+            </article>
+            <article>
+              <h3>🚆 Trains</h3>
+              <ul>
+                <li>💰 Ticket price</li>
+                <li>🕒 Departure time</li>
+                <li>⏱️ Journey duration</li>
+                <li>🚄 Train type (regular / high speed)</li>
+                <li>🪑 Seat class</li>
+                <li>📍 Origin / destination station</li>
+                <li>❌ Free cancellation</li>
+                <li>📶 Wi-Fi</li>
+                <li>⭐ Service rating</li>
+              </ul>
+            </article>
+            <article>
+              <h3>🚌 Buses</h3>
+              <ul>
+                <li>💰 Price</li>
+                <li>🕒 Departure time</li>
+                <li>⏱️ Trip duration</li>
+                <li>🪑 Reserved seat</li>
+                <li>❄️ Air conditioning</li>
+                <li>📍 Station / pickup location</li>
+                <li>❌ Cancellation</li>
+                <li>🧳 Luggage allowance</li>
+                <li>⭐ Passenger rating</li>
+              </ul>
+            </article>
+            <article>
+              <h3>🚗 Car rentals</h3>
+              <ul>
+                <li>🚘 Car type (compact / family / SUV / luxury)</li>
+                <li>💰 Price per day</li>
+                <li>📍 Pickup / drop-off location</li>
+                <li>⛽ Fuel type</li>
+                <li>⚙️ Transmission (manual / automatic)</li>
+                <li>👥 Passenger count</li>
+                <li>🧳 Trunk size</li>
+                <li>🛡️ Insurance included</li>
+                <li>❌ Free cancellation</li>
+                <li>⭐ Company rating</li>
+              </ul>
+            </article>
+            <article>
+              <h3>🚲 Bikes & micromobility</h3>
+              <ul>
+                <li>🚲 Type (bike / e-bike / scooter)</li>
+                <li>💰 Price per hour / day</li>
+                <li>🔋 Battery range</li>
+                <li>📍 Rental zone</li>
+                <li>🪖 Helmet included</li>
+                <li>⏱️ Short vs. long rental</li>
+                <li>⭐ User rating</li>
+              </ul>
+            </article>
+            <article>
+              <h3>⛴️ Ferries</h3>
+              <ul>
+                <li>💰 Price</li>
+                <li>🕒 Departure time</li>
+                <li>⏱️ Sailing duration</li>
+                <li>🚢 Vessel type</li>
+                <li>🪑 Seat / cabin</li>
+                <li>🚗 Car onboard</li>
+                <li>📍 Port of origin / destination</li>
+                <li>❌ Cancellation</li>
+                <li>⭐ Passenger rating</li>
+              </ul>
+            </article>
+            <article>
+              <h3>🏨 Stays & BNB</h3>
+              <ul>
+                <li>💰 Price range per night</li>
+                <li>📍 Location / neighborhood</li>
+                <li>🏠 Property type</li>
+                <li>👥 Guest count</li>
+                <li>🛏️ Bedrooms / bathrooms</li>
+                <li>⭐ Guest rating / stars</li>
+                <li>❌ Free cancellation</li>
+                <li>💳 Pay now or on arrival</li>
+                <li>📶 Wi-Fi / kitchen / parking / pool</li>
+                <li>👶 Family & accessibility options</li>
+              </ul>
+            </article>
+            <article>
+              <h3>🌍 All-in-one journeys</h3>
+              <ul>
+                <li>🚦 Transport mix</li>
+                <li>💰 Lowest price</li>
+                <li>⏱️ Fastest route</li>
+                <li>🔁 Number of transfers</li>
+                <li>📍 Origin / destination</li>
+                <li>❌ Flexibility</li>
+              </ul>
+            </article>
+          </div>
         </section>
 
         <section class="features">
@@ -96,8 +241,8 @@
               <p>See prices for rail, road, sea, and air in one unified feed.</p>
             </article>
             <article>
-              <h3>Clear breakdowns</h3>
-              <p>Compare total costs, journey times, and provider ratings.</p>
+              <h3>Worldwide partners</h3>
+              <p>Search global providers with one form and compare them instantly.</p>
             </article>
             <article>
               <h3>Fast availability</h3>
@@ -109,18 +254,18 @@
     </div>
 
     <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
-      <div class="loading-card">
-        <video
-          id="loadingVideo"
-          src="assets/loading-walk.mp4"
-          autoplay
+        <div class="loading-card">
+          <video
+            id="loadingVideo"
+            src="assets/loading-walk.mp4"
+            autoplay
           loop
           muted
           playsinline
         ></video>
         <div>
-          <h3>Searching every provider…</h3>
-          <p>We are gathering the freshest prices for you.</p>
+          <h3>Searching worldwide providers…</h3>
+          <p>We are gathering the freshest global prices for you.</p>
         </div>
       </div>
     </div>
@@ -128,11 +273,11 @@
     <footer>
       <div>
         <strong>Mofet</strong>
-        <p>Beautiful light-blue travel comparison built for clarity.</p>
+        <p>Beautiful light-blue travel comparison built for global clarity.</p>
       </div>
       <div>
         <p>Email: hello@mofet.app</p>
-        <p>Support: 24/7 global travel help</p>
+        <p>Support: 24/7 worldwide travel help</p>
       </div>
     </footer>
 
