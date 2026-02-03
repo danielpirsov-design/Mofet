@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mofet Travel Finder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <nav class="nav">
+          <div class="brand">Mofet</div>
+          <button class="primary-button">Start Searching</button>
+        </nav>
+        <div class="hero-content">
+          <div>
+            <p class="eyebrow">One search. Every route.</p>
+            <h1>Compare prices across every travel category in one place.</h1>
+            <p class="subhead">
+              Flights, trains, buses, car rentals, ferries, bikes, taxis, and stays — all
+              grouped together with clear pricing and availability.
+            </p>
+            <div class="hero-tags">
+              <span>✈️ Flights</span>
+              <span>🚆 Trains</span>
+              <span>🚌 Buses</span>
+              <span>🚗 Car rentals</span>
+              <span>⛴️ Ferries</span>
+              <span>🚲 Bikes</span>
+              <span>🚖 Taxis</span>
+              <span>🏡 Hotels &amp; stays</span>
+            </div>
+          </div>
+          <div class="hero-card">
+            <h2>Search now</h2>
+            <p>Pick a category, travelers, and details to start comparing.</p>
+            <form id="searchForm" class="search-form">
+              <label>
+                Category
+                <select id="category" required>
+                  <option value="">Choose a category</option>
+                  <option value="Flights">Flights</option>
+                  <option value="Trains">Trains</option>
+                  <option value="Buses">Buses</option>
+                  <option value="Car rentals">Car rentals</option>
+                  <option value="Ferries">Ferries</option>
+                  <option value="Bikes">Bikes</option>
+                  <option value="Taxis">Taxis</option>
+                  <option value="Stays">Stays (Hotels, Apartments, Houses)</option>
+                </select>
+              </label>
+              <label>
+                Travelers
+                <input id="travelers" type="number" min="1" max="12" value="2" required />
+              </label>
+              <label>
+                Destination
+                <input
+                  id="destination"
+                  class="location-input"
+                  type="text"
+                  placeholder="e.g. Paris, France"
+                  list="location-options"
+                />
+              </label>
+              <datalist id="location-options"></datalist>
+
+              <div class="filter-panels">
+                <div class="filter-panel" data-categories="Flights Trains Buses Ferries">
+                  <h4>Route details</h4>
+                  <label>
+                    From
+                    <input
+                      class="location-input"
+                      id="routeFrom"
+                      type="text"
+                      placeholder="e.g. London, UK"
+                      list="location-options"
+                    />
+                  </label>
+                  <label>
+                    To
+                    <input
+                      class="location-input"
+                      id="routeTo"
+                      type="text"
+                      placeholder="e.g. Paris, France"
+                      list="location-options"
+                    />
+                  </label>
+                  <div class="inline-fields">
+                    <label>
+                      Depart
+                      <input id="departDate" type="date" />
+                    </label>
+                    <label>
+                      Return
+                      <input id="returnDate" type="date" />
+                    </label>
+                  </div>
+                </div>
+
+                <div class="filter-panel" data-categories="Car rentals">
+                  <h4>Car rental filters</h4>
+                  <label>
+                    Pickup location
+                    <input
+                      class="location-input"
+                      id="carPickup"
+                      type="text"
+                      placeholder="e.g. Rome Airport"
+                      list="location-options"
+                    />
+                  </label>
+                  <label>
+                    Drop-off location
+                    <input
+                      class="location-input"
+                      id="carDropoff"
+                      type="text"
+                      placeholder="e.g. Florence Downtown"
+                      list="location-options"
+                    />
+                  </label>
+                  <div class="inline-fields">
+                    <label>
+                      Pickup date
+                      <input id="carPickupDate" type="date" />
+                    </label>
+                    <label>
+                      Drop-off date
+                      <input id="carDropoffDate" type="date" />
+                    </label>
+                  </div>
+                </div>
+
+                <div class="filter-panel" data-categories="Bikes">
+                  <h4>Bike rental filters</h4>
+                  <label>
+                    Pickup location
+                    <input
+                      class="location-input"
+                      id="bikePickup"
+                      type="text"
+                      placeholder="e.g. Amsterdam Centrum"
+                      list="location-options"
+                    />
+                  </label>
+                  <label>
+                    Duration (hours)
+                    <input id="bikeDuration" type="number" min="1" max="72" value="4" />
+                  </label>
+                  <label>
+                    Bike type
+                    <select id="bikeType">
+                      <option value="City bike">City bike</option>
+                      <option value="E-bike">E-bike</option>
+                      <option value="Road bike">Road bike</option>
+                      <option value="Mountain bike">Mountain bike</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="filter-panel" data-categories="Taxis">
+                  <h4>Taxi trip filters</h4>
+                  <label>
+                    Pickup
+                    <input
+                      class="location-input"
+                      id="taxiPickup"
+                      type="text"
+                      placeholder="e.g. JFK Terminal 4"
+                      list="location-options"
+                    />
+                  </label>
+                  <label>
+                    Drop-off
+                    <input
+                      class="location-input"
+                      id="taxiDropoff"
+                      type="text"
+                      placeholder="e.g. Times Square"
+                      list="location-options"
+                    />
+                  </label>
+                  <div class="inline-fields">
+                    <label>
+                      Pickup time
+                      <input id="taxiPickupTime" type="time" />
+                    </label>
+                    <label>
+                      Vehicle type
+                      <select id="taxiType">
+                        <option value="Standard">Standard</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Van">Van</option>
+                      </select>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="filter-panel" data-categories="Stays">
+                  <h4>Stay filters</h4>
+                  <label>
+                    Location
+                    <input
+                      class="location-input"
+                      id="stayLocation"
+                      type="text"
+                      placeholder="e.g. Barcelona, Spain"
+                      list="location-options"
+                    />
+                  </label>
+                  <div class="inline-fields">
+                    <label>
+                      Rooms
+                      <input id="stayRooms" type="number" min="1" max="6" value="1" />
+                    </label>
+                    <label>
+                      Rating
+                      <select id="stayRating">
+                        <option value="Any">Any</option>
+                        <option value="4+">4+ stars</option>
+                        <option value="4.5+">4.5+ stars</option>
+                        <option value="5">5 stars</option>
+                      </select>
+                    </label>
+                  </div>
+                  <fieldset>
+                    <legend>Property types</legend>
+                    <div class="checkbox-grid">
+                      <label><input type="checkbox" value="Hotel" checked /> Hotel</label>
+                      <label><input type="checkbox" value="Apartment" checked /> Apartment</label>
+                      <label><input type="checkbox" value="House" checked /> House</label>
+                      <label><input type="checkbox" value="BNB" checked /> BNB</label>
+                      <label><input type="checkbox" value="Hostel" /> Hostel</label>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <button class="primary-button" type="submit">Find deals</button>
+            </form>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="results">
+          <div class="results-header">
+            <div>
+              <h2>Live comparison</h2>
+              <p>We aggregate the best options and show the full breakdown.</p>
+            </div>
+            <div class="filter">
+              <label>
+                Sort by
+                <select id="sortBy">
+                  <option value="price">Lowest price</option>
+                  <option value="duration">Shortest duration</option>
+                  <option value="rating">Best rating</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <div id="resultsGrid" class="results-grid"></div>
+          <div class="integration-note">
+            <h3>Official provider connections</h3>
+            <p>
+              We only link to original inventory sources. Add API credentials to activate live
+              pricing from each provider.
+            </p>
+            <div id="integrationGrid" class="integration-grid"></div>
+          </div>
+        </section>
+
+        <section class="features">
+          <h2>Why travelers love Mofet</h2>
+          <div class="features-grid">
+            <article>
+              <h3>All transport types</h3>
+              <p>See prices for rail, road, sea, and air in one unified feed.</p>
+            </article>
+            <article>
+              <h3>Clear breakdowns</h3>
+              <p>Compare total costs, journey times, and provider ratings.</p>
+            </article>
+            <article>
+              <h3>Fast availability</h3>
+              <p>Instantly see which options still have seats for your group.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+      <div class="loading-card">
+        <video
+          id="loadingVideo"
+          src="assets/loading-walk.mp4"
+          autoplay
+          loop
+          muted
+          playsinline
+        ></video>
+        <div>
+          <h3>Searching every provider…</h3>
+          <p>We are gathering the freshest prices for you.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div>
+        <strong>Mofet</strong>
+        <p>Beautiful light-blue travel comparison built for clarity.</p>
+      </div>
+      <div>
+        <p>Email: hello@mofet.app</p>
+        <p>Support: 24/7 global travel help</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
