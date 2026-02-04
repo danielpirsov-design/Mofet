@@ -23,293 +23,6 @@ const citySuggestions = [
   "Dubai, UAE",
 ];
 
-const providerLinkBuilders = {
-  Emirates: (destination) =>
-    `https://www.emirates.com/english/book/?destination=${destination}`,
-  Lufthansa: (destination) =>
-    `https://www.lufthansa.com/us/en/flight-search?destination=${destination}`,
-  "Qatar Airways": (destination) =>
-    `https://www.qatarairways.com/en/book.html?to=${destination}`,
-  "SNCF / TGV INOUI": (destination) =>
-    `https://www.sncf-connect.com/en-en/trip?arrival=${destination}`,
-  "Deutsche Bahn": (destination) =>
-    `https://www.bahn.com/en?arrival=${destination}`,
-  Eurostar: (destination) =>
-    `https://www.eurostar.com/search?arrival=${destination}`,
-  FlixBus: (destination) =>
-    `https://www.flixbus.com/search?arrivalCity=${destination}`,
-  "National Express": (destination) =>
-    `https://www.nationalexpress.com/en?destination=${destination}`,
-  Megabus: (destination) =>
-    `https://us.megabus.com/journey-planner?destination=${destination}`,
-  Hertz: (destination) =>
-    `https://www.hertz.com/rentacar/reservation/?location=${destination}`,
-  Sixt: (destination) =>
-    `https://www.sixt.com/booking/?location=${destination}`,
-  Avis: (destination) =>
-    `https://www.avis.com/en/reservation?location=${destination}`,
-  DFDS: (destination) =>
-    `https://www.dfds.com/en/passenger-ferries/search?destination=${destination}`,
-  "Stena Line": (destination) =>
-    `https://www.stenaline.com/book?destination=${destination}`,
-  "Brittany Ferries": (destination) =>
-    `https://www.brittany-ferries.co.uk/search?destination=${destination}`,
-  Nextbike: (destination) =>
-    `https://www.nextbike.net/en/locations?search=${destination}`,
-  Bird: (destination) =>
-    `https://www.bird.co/map/?location=${destination}`,
-  Mobike: (destination) =>
-    `https://mobike.com/global/search?location=${destination}`,
-  Omio: (destination) => `https://www.omio.com/search?to=${destination}`,
-  Rome2Rio: (destination) => `https://www.rome2rio.com/map/${destination}`,
-  "12Go": (destination) => `https://12go.asia/en?to=${destination}`,
-  "Booking.com": (destination) =>
-    `https://www.booking.com/searchresults.html?ss=${destination}`,
-  Airbnb: (destination) =>
-    `https://www.airbnb.com/s/${destination}/homes`,
-  Hipcamp: (destination) =>
-    `https://www.hipcamp.com/en-US/search?search_term=${destination}`,
-};
-
-const resultsByCategory = {
-  Flights: [
-    {
-      provider: "Emirates",
-      price: 642,
-      duration: "7h 25m",
-      rating: 4.8,
-      seats: 6,
-      details: [
-        "Direct flight • Economy Flex",
-        "1 checked bag + cabin bag",
-        "Changeable with low fee",
-      ],
-      site: "Emirates",
-    },
-    {
-      provider: "Lufthansa",
-      price: 589,
-      duration: "8h 05m",
-      rating: 4.6,
-      seats: 4,
-      details: ["1 stop • Premium Economy", "Flexible cancellation", "Skytrax 4★"],
-      site: "Lufthansa",
-    },
-    {
-      provider: "Qatar Airways",
-      price: 714,
-      duration: "7h 55m",
-      rating: 4.9,
-      seats: 9,
-      details: ["Direct flight • Business", "Lounge access", "Priority boarding"],
-      site: "Qatar Airways",
-    },
-  ],
-  Trains: [
-    {
-      provider: "SNCF / TGV INOUI",
-      price: 164,
-      duration: "3h 02m",
-      rating: 4.5,
-      seats: 12,
-      details: ["First class seat", "Wi-Fi onboard", "Free cancellation"],
-      site: "SNCF / TGV INOUI",
-    },
-    {
-      provider: "Deutsche Bahn",
-      price: 142,
-      duration: "3h 40m",
-      rating: 4.4,
-      seats: 8,
-      details: ["ICE train", "Seat reservation", "Flexible ticket"],
-      site: "Deutsche Bahn",
-    },
-    {
-      provider: "Eurostar",
-      price: 198,
-      duration: "2h 15m",
-      rating: 4.7,
-      seats: 5,
-      details: ["Standard Premier", "Fast-track boarding", "Changeable fare"],
-      site: "Eurostar",
-    },
-  ],
-  Buses: [
-    {
-      provider: "FlixBus",
-      price: 46,
-      duration: "6h 20m",
-      rating: 4.1,
-      seats: 20,
-      details: ["Reserved seat", "Air conditioning", "2 bags included"],
-      site: "FlixBus",
-    },
-    {
-      provider: "National Express",
-      price: 52,
-      duration: "5h 50m",
-      rating: 4.0,
-      seats: 11,
-      details: ["Extra legroom", "Onboard Wi-Fi", "Flexible ticket"],
-      site: "National Express",
-    },
-    {
-      provider: "Megabus",
-      price: 39,
-      duration: "6h 10m",
-      rating: 3.9,
-      seats: 14,
-      details: ["Seat guarantee", "No change fees", "USB charging"],
-      site: "Megabus",
-    },
-  ],
-  "Car rentals": [
-    {
-      provider: "Hertz",
-      price: 78,
-      duration: "Per day",
-      rating: 4.3,
-      seats: 7,
-      details: ["SUV • Automatic", "Full insurance", "Free cancellation"],
-      site: "Hertz",
-    },
-    {
-      provider: "Sixt",
-      price: 64,
-      duration: "Per day",
-      rating: 4.5,
-      seats: 9,
-      details: ["Compact • Hybrid", "Unlimited mileage", "Pay on pickup"],
-      site: "Sixt",
-    },
-    {
-      provider: "Avis",
-      price: 72,
-      duration: "Per day",
-      rating: 4.4,
-      seats: 5,
-      details: ["Midsize • Automatic", "Premium cover", "Priority desk"],
-      site: "Avis",
-    },
-  ],
-  Ferries: [
-    {
-      provider: "DFDS",
-      price: 94,
-      duration: "4h 30m",
-      rating: 4.6,
-      seats: 16,
-      details: ["Cabin upgrade", "Car pickup", "Flexible ticket"],
-      site: "DFDS",
-    },
-    {
-      provider: "Stena Line",
-      price: 88,
-      duration: "5h 10m",
-      rating: 4.4,
-      seats: 10,
-      details: ["Lounge access", "Vehicle space", "Changeable fare"],
-      site: "Stena Line",
-    },
-    {
-      provider: "Brittany Ferries",
-      price: 102,
-      duration: "6h 00m",
-      rating: 4.5,
-      seats: 7,
-      details: ["Sea view cabin", "Pet friendly", "Dining credit"],
-      site: "Brittany Ferries",
-    },
-  ],
-  "Bikes & micro-mobility": [
-    {
-      provider: "Nextbike",
-      price: 12,
-      duration: "Per day",
-      rating: 4.2,
-      seats: 22,
-      details: ["City bike", "Helmet included", "Unlimited rides"],
-      site: "Nextbike",
-    },
-    {
-      provider: "Bird",
-      price: 8,
-      duration: "Per hour",
-      rating: 4.0,
-      seats: 15,
-      details: ["E-scooter", "50 km range", "Dockless pickup"],
-      site: "Bird",
-    },
-    {
-      provider: "Mobike",
-      price: 10,
-      duration: "Per day",
-      rating: 4.1,
-      seats: 18,
-      details: ["Smart lock", "City zone map", "24/7 support"],
-      site: "Mobike",
-    },
-  ],
-  "Combined transport": [
-    {
-      provider: "Omio",
-      price: 186,
-      duration: "4h 05m",
-      rating: 4.4,
-      seats: 9,
-      details: ["Train + bus", "1 change", "Cheapest fare"],
-      site: "Omio",
-    },
-    {
-      provider: "Rome2Rio",
-      price: 214,
-      duration: "3h 20m",
-      rating: 4.3,
-      seats: 6,
-      details: ["Flight + rail", "Fastest route", "Flexible timing"],
-      site: "Rome2Rio",
-    },
-    {
-      provider: "12Go",
-      price: 172,
-      duration: "4h 40m",
-      rating: 4.2,
-      seats: 11,
-      details: ["Bus + ferry", "2 changes", "Low cost"],
-      site: "12Go",
-    },
-  ],
-  Accommodations: [
-    {
-      provider: "Booking.com",
-      price: 138,
-      duration: "Per night",
-      rating: 4.5,
-      seats: 6,
-      details: ["4★ boutique hotel", "Free cancellation", "Breakfast included"],
-      site: "Booking.com",
-    },
-    {
-      provider: "Airbnb",
-      price: 116,
-      duration: "Per night",
-      rating: 4.7,
-      seats: 4,
-      details: ["2-bedroom apartment", "Self check-in", "Kitchen + laundry"],
-      site: "Airbnb",
-    },
-    {
-      provider: "Hipcamp",
-      price: 74,
-      duration: "Per night",
-      rating: 4.6,
-      seats: 8,
-      details: ["Eco campsite", "Pet friendly", "Parking included"],
-      site: "Hipcamp",
-    },
-  ],
-};
-
 const formatDuration = (duration) => `Estimated duration: ${duration}`;
 const destinationInput = document.querySelector("#destination");
 const adultsInput = document.querySelector("#adults");
@@ -326,32 +39,7 @@ const resultsState = {
   adults: 2,
   children: 0,
   dates: "",
-};
-
-const slugifyProvider = (provider) =>
-  provider
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "")
-    .trim();
-
-const buildProviderLink = (provider, category, destination, adults, children, dates) => {
-  const encodedDestination = encodeURIComponent(destination);
-  const builder = providerLinkBuilders[provider];
-  if (builder) {
-    const baseLink = builder(encodedDestination);
-    const params = new URLSearchParams();
-    params.set("category", category);
-    params.set("destination", destination);
-    if (dates) params.set("dates", dates);
-    if (adults) params.set("adults", String(adults));
-    if (children) params.set("children", String(children));
-    return `${baseLink}${baseLink.includes("?") ? "&" : "?"}${params.toString()}`;
-  }
-  const encodedCategory = encodeURIComponent(category);
-  return `https://www.${slugifyProvider(
-    provider
-  )}.com/?category=${encodedCategory}&destination=${encodedDestination}`;
+  sort: "price",
 };
 
 const getCityMatch = (value) => {
@@ -372,30 +60,9 @@ const updateResultsSummary = (category, destination, travelers, showAll, total, 
   pageIndicator.textContent = `Page ${page} of ${pageCount || 1}`;
 };
 
-const renderResults = (category, destination, travelers, showAll, page, pageSize) => {
-  const baseResults = showAll
-    ? Object.entries(resultsByCategory).flatMap(([group, items]) =>
-        items.map((item) => ({ ...item, category: group }))
-      )
-    : (resultsByCategory[category] || []).map((item) => ({
-        ...item,
-        category,
-      }));
-  const sortedResults = [...baseResults].sort((a, b) => {
-    if (sortBy.value === "price") return a.price - b.price;
-    if (sortBy.value === "duration") {
-      return a.duration.localeCompare(b.duration);
-    }
-    return b.rating - a.rating;
-  });
-  const total = sortedResults.length;
-  const pageCount = Math.max(Math.ceil(total / pageSize), 1);
-  const currentPage = Math.min(Math.max(page, 1), pageCount);
-  const startIndex = (currentPage - 1) * pageSize;
-  const pagedResults = sortedResults.slice(startIndex, startIndex + pageSize);
-
+const renderResults = (destination, travelers, showAll, payload) => {
   resultsGrid.innerHTML = "";
-  pagedResults.forEach((result) => {
+  payload.results.forEach((result) => {
     const card = document.createElement("div");
     card.className = "result-card";
     card.innerHTML = `
@@ -411,21 +78,22 @@ const renderResults = (category, destination, travelers, showAll, page, pageSize
       <ul>
         ${result.details.map((detail) => `<li>${detail}</li>`).join("")}
       </ul>
-      <a href="${buildProviderLink(
-        result.site,
-        result.category,
-        destination,
-        resultsState.adults,
-        resultsState.children,
-        resultsState.dates
-      )}" target="_blank" rel="noreferrer">Open provider</a>
+      <a href="${result.link}" target="_blank" rel="noreferrer">Open provider</a>
     `;
     resultsGrid.appendChild(card);
   });
-  updateResultsSummary(category, destination, travelers, showAll, total, currentPage, pageCount);
-  prevPageButton.disabled = currentPage <= 1;
-  nextPageButton.disabled = currentPage >= pageCount;
-  resultsState.page = currentPage;
+  updateResultsSummary(
+    resultsState.category,
+    destination,
+    travelers,
+    showAll,
+    payload.total,
+    payload.page,
+    payload.pageCount
+  );
+  prevPageButton.disabled = payload.page <= 1;
+  nextPageButton.disabled = payload.page >= payload.pageCount;
+  resultsState.page = payload.page;
 };
 
 const showLoading = () => {
@@ -453,6 +121,7 @@ const buildSearchParams = ({
   dates,
   showAll,
   page,
+  sort,
 }) => {
   const params = new URLSearchParams();
   params.set("category", category);
@@ -462,6 +131,7 @@ const buildSearchParams = ({
   if (dates) params.set("dates", dates);
   if (showAll) params.set("showAll", "true");
   if (page) params.set("page", String(page));
+  if (sort) params.set("sort", sort);
   return params;
 };
 
@@ -474,8 +144,9 @@ const parseSearchParams = () => {
   const dates = params.get("dates") || "";
   const showAll = params.get("showAll") === "true";
   const page = Number(params.get("page") || 1);
+  const sort = params.get("sort") || "price";
   if (!category || !destination) return null;
-  return { category, destination, adults, children, dates, showAll, page };
+  return { category, destination, adults, children, dates, showAll, page, sort };
 };
 
 const openResultsInNewTab = (params) => {
@@ -483,26 +154,52 @@ const openResultsInNewTab = (params) => {
   window.open(url, "_blank", "noopener,noreferrer");
 };
 
+const fetchResults = async ({ category, destination, adults, children, dates, showAll, page }) => {
+  const params = buildSearchParams({
+    category,
+    destination,
+    adults,
+    children,
+    dates,
+    showAll,
+    page,
+    sort: resultsState.sort,
+  });
+  params.set("pageSize", String(resultsState.pageSize));
+  const response = await fetch(`/api/search?${params.toString()}`);
+  if (!response.ok) {
+    throw new Error("Failed to load results");
+  }
+  return response.json();
+};
+
+const loadResults = async ({ page }) => {
+  try {
+    showLoading();
+    const payload = await fetchResults({
+      category: resultsState.category,
+      destination: resultsState.destination,
+      adults: resultsState.adults,
+      children: resultsState.children,
+      dates: resultsState.dates,
+      showAll: resultsState.showAll,
+      page,
+    });
+    renderResults(resultsState.destination, resultsState.travelers, resultsState.showAll, payload);
+  } catch (error) {
+    resultsSummary.textContent = "Unable to load results. Please try again.";
+    resultsGrid.innerHTML = "";
+  } finally {
+    hideLoading();
+  }
+};
+
 prevPageButton.addEventListener("click", () => {
-  renderResults(
-    resultsState.category,
-    resultsState.destination,
-    resultsState.travelers,
-    resultsState.showAll,
-    resultsState.page - 1,
-    resultsState.pageSize
-  );
+  loadResults({ page: resultsState.page - 1 });
 });
 
 nextPageButton.addEventListener("click", () => {
-  renderResults(
-    resultsState.category,
-    resultsState.destination,
-    resultsState.travelers,
-    resultsState.showAll,
-    resultsState.page + 1,
-    resultsState.pageSize
-  );
+  loadResults({ page: resultsState.page + 1 });
 });
 
 searchForm.addEventListener("submit", (event) => {
@@ -518,7 +215,6 @@ searchForm.addEventListener("submit", (event) => {
     return;
   }
 
-  showLoading();
   const travelers = adults + children;
   resultsState.category = category;
   resultsState.destination = destination;
@@ -527,6 +223,7 @@ searchForm.addEventListener("submit", (event) => {
   resultsState.adults = adults;
   resultsState.children = children;
   resultsState.dates = dates;
+  resultsState.sort = sortBy.value;
   resultsState.page = 1;
   const params = buildSearchParams({
     category,
@@ -536,10 +233,10 @@ searchForm.addEventListener("submit", (event) => {
     dates,
     showAll,
     page: 1,
+    sort: resultsState.sort,
   });
   setTimeout(() => {
-    hideLoading();
-    renderResults(category, destination, travelers, showAll, 1, resultsState.pageSize);
+    loadResults({ page: 1 });
     openResultsInNewTab(params);
   }, 1600);
 });
@@ -558,25 +255,21 @@ sortBy.addEventListener("change", () => {
   resultsState.adults = adults;
   resultsState.children = children;
   resultsState.dates = dates;
-  renderResults(
-    category,
-    destination,
-    adults + children,
-    showAll,
-    resultsState.page,
-    resultsState.pageSize
-  );
+  resultsState.sort = sortBy.value;
+  resultsState.page = 1;
+  loadResults({ page: resultsState.page });
 });
 
 const seededSearch = parseSearchParams();
 if (seededSearch) {
-  const { category, destination, adults, children, dates, showAll, page } = seededSearch;
+  const { category, destination, adults, children, dates, showAll, page, sort } = seededSearch;
   document.querySelector("#category").value = category;
   adultsInput.value = String(adults || 1);
   childrenInput.value = String(children || 0);
   destinationInput.value = destination;
   datesInput.value = dates;
   showAllInput.checked = showAll;
+  sortBy.value = sort;
   resultsState.category = category;
   resultsState.destination = destination;
   resultsState.travelers = adults + children;
@@ -584,22 +277,9 @@ if (seededSearch) {
   resultsState.adults = adults;
   resultsState.children = children;
   resultsState.dates = dates;
+  resultsState.sort = sort;
   resultsState.page = page;
-  renderResults(
-    category,
-    destination,
-    adults + children,
-    showAll,
-    page,
-    resultsState.pageSize
-  );
+  loadResults({ page });
 } else {
-  renderResults(
-    resultsState.category,
-    resultsState.destination,
-    resultsState.travelers,
-    resultsState.showAll,
-    resultsState.page,
-    resultsState.pageSize
-  );
+  loadResults({ page: resultsState.page });
 }
