@@ -3,6 +3,70 @@ const resultsGrid = document.querySelector("#resultsGrid");
 const sortBy = document.querySelector("#sortBy");
 const loadingOverlay = document.querySelector("#loadingOverlay");
 
+const citySuggestions = [
+  "Paris, France",
+  "Berlin, Germany",
+  "Rome, Italy",
+  "Barcelona, Spain",
+  "Lisbon, Portugal",
+  "Amsterdam, Netherlands",
+  "Vienna, Austria",
+  "Zurich, Switzerland",
+  "London, United Kingdom",
+  "New York, USA",
+  "Tokyo, Japan",
+  "Singapore",
+  "Dubai, UAE",
+];
+
+const providerLinkBuilders = {
+  Emirates: (destination) =>
+    `https://www.emirates.com/english/book/?destination=${destination}`,
+  Lufthansa: (destination) =>
+    `https://www.lufthansa.com/us/en/flight-search?destination=${destination}`,
+  "Qatar Airways": (destination) =>
+    `https://www.qatarairways.com/en/book.html?to=${destination}`,
+  "SNCF / TGV INOUI": (destination) =>
+    `https://www.sncf-connect.com/en-en/trip?arrival=${destination}`,
+  "Deutsche Bahn": (destination) =>
+    `https://www.bahn.com/en?arrival=${destination}`,
+  Eurostar: (destination) =>
+    `https://www.eurostar.com/search?arrival=${destination}`,
+  FlixBus: (destination) =>
+    `https://www.flixbus.com/search?arrivalCity=${destination}`,
+  "National Express": (destination) =>
+    `https://www.nationalexpress.com/en?destination=${destination}`,
+  Megabus: (destination) =>
+    `https://us.megabus.com/journey-planner?destination=${destination}`,
+  Hertz: (destination) =>
+    `https://www.hertz.com/rentacar/reservation/?location=${destination}`,
+  Sixt: (destination) =>
+    `https://www.sixt.com/booking/?location=${destination}`,
+  Avis: (destination) =>
+    `https://www.avis.com/en/reservation?location=${destination}`,
+  DFDS: (destination) =>
+    `https://www.dfds.com/en/passenger-ferries/search?destination=${destination}`,
+  "Stena Line": (destination) =>
+    `https://www.stenaline.com/book?destination=${destination}`,
+  "Brittany Ferries": (destination) =>
+    `https://www.brittany-ferries.co.uk/search?destination=${destination}`,
+  Nextbike: (destination) =>
+    `https://www.nextbike.net/en/locations?search=${destination}`,
+  Bird: (destination) =>
+    `https://www.bird.co/map/?location=${destination}`,
+  Mobike: (destination) =>
+    `https://mobike.com/global/search?location=${destination}`,
+  Omio: (destination) => `https://www.omio.com/search?to=${destination}`,
+  Rome2Rio: (destination) => `https://www.rome2rio.com/map/${destination}`,
+  "12Go": (destination) => `https://12go.asia/en?to=${destination}`,
+  "Booking.com": (destination) =>
+    `https://www.booking.com/searchresults.html?ss=${destination}`,
+  Airbnb: (destination) =>
+    `https://www.airbnb.com/s/${destination}/homes`,
+  Hipcamp: (destination) =>
+    `https://www.hipcamp.com/en-US/search?search_term=${destination}`,
+};
+
 const resultsByCategory = {
   Flights: [
     {
@@ -16,7 +80,7 @@ const resultsByCategory = {
         "1 checked bag + cabin bag",
         "Changeable with low fee",
       ],
-      link: "https://www.emirates.com/",
+      site: "Emirates",
     },
     {
       provider: "Lufthansa",
@@ -25,7 +89,7 @@ const resultsByCategory = {
       rating: 4.6,
       seats: 4,
       details: ["1 stop • Premium Economy", "Flexible cancellation", "Skytrax 4★"],
-      link: "https://www.lufthansa.com/",
+      site: "Lufthansa",
     },
     {
       provider: "Qatar Airways",
@@ -34,7 +98,7 @@ const resultsByCategory = {
       rating: 4.9,
       seats: 9,
       details: ["Direct flight • Business", "Lounge access", "Priority boarding"],
-      link: "https://www.qatarairways.com/",
+      site: "Qatar Airways",
     },
   ],
   Trains: [
@@ -45,7 +109,7 @@ const resultsByCategory = {
       rating: 4.5,
       seats: 12,
       details: ["First class seat", "Wi-Fi onboard", "Free cancellation"],
-      link: "https://www.sncf.com/",
+      site: "SNCF / TGV INOUI",
     },
     {
       provider: "Deutsche Bahn",
@@ -54,7 +118,7 @@ const resultsByCategory = {
       rating: 4.4,
       seats: 8,
       details: ["ICE train", "Seat reservation", "Flexible ticket"],
-      link: "https://www.bahn.com/",
+      site: "Deutsche Bahn",
     },
     {
       provider: "Eurostar",
@@ -63,7 +127,7 @@ const resultsByCategory = {
       rating: 4.7,
       seats: 5,
       details: ["Standard Premier", "Fast-track boarding", "Changeable fare"],
-      link: "https://www.eurostar.com/",
+      site: "Eurostar",
     },
   ],
   Buses: [
@@ -74,7 +138,7 @@ const resultsByCategory = {
       rating: 4.1,
       seats: 20,
       details: ["Reserved seat", "Air conditioning", "2 bags included"],
-      link: "https://www.flixbus.com/",
+      site: "FlixBus",
     },
     {
       provider: "National Express",
@@ -83,7 +147,7 @@ const resultsByCategory = {
       rating: 4.0,
       seats: 11,
       details: ["Extra legroom", "Onboard Wi-Fi", "Flexible ticket"],
-      link: "https://www.nationalexpress.com/",
+      site: "National Express",
     },
     {
       provider: "Megabus",
@@ -92,7 +156,7 @@ const resultsByCategory = {
       rating: 3.9,
       seats: 14,
       details: ["Seat guarantee", "No change fees", "USB charging"],
-      link: "https://us.megabus.com/",
+      site: "Megabus",
     },
   ],
   "Car rentals": [
@@ -103,7 +167,7 @@ const resultsByCategory = {
       rating: 4.3,
       seats: 7,
       details: ["SUV • Automatic", "Full insurance", "Free cancellation"],
-      link: "https://www.hertz.com/",
+      site: "Hertz",
     },
     {
       provider: "Sixt",
@@ -112,7 +176,7 @@ const resultsByCategory = {
       rating: 4.5,
       seats: 9,
       details: ["Compact • Hybrid", "Unlimited mileage", "Pay on pickup"],
-      link: "https://www.sixt.com/",
+      site: "Sixt",
     },
     {
       provider: "Avis",
@@ -121,7 +185,7 @@ const resultsByCategory = {
       rating: 4.4,
       seats: 5,
       details: ["Midsize • Automatic", "Premium cover", "Priority desk"],
-      link: "https://www.avis.com/",
+      site: "Avis",
     },
   ],
   Ferries: [
@@ -132,7 +196,7 @@ const resultsByCategory = {
       rating: 4.6,
       seats: 16,
       details: ["Cabin upgrade", "Car pickup", "Flexible ticket"],
-      link: "https://www.dfds.com/",
+      site: "DFDS",
     },
     {
       provider: "Stena Line",
@@ -141,7 +205,7 @@ const resultsByCategory = {
       rating: 4.4,
       seats: 10,
       details: ["Lounge access", "Vehicle space", "Changeable fare"],
-      link: "https://www.stenaline.com/",
+      site: "Stena Line",
     },
     {
       provider: "Brittany Ferries",
@@ -150,7 +214,7 @@ const resultsByCategory = {
       rating: 4.5,
       seats: 7,
       details: ["Sea view cabin", "Pet friendly", "Dining credit"],
-      link: "https://www.brittany-ferries.co.uk/",
+      site: "Brittany Ferries",
     },
   ],
   "Bikes & micro-mobility": [
@@ -161,7 +225,7 @@ const resultsByCategory = {
       rating: 4.2,
       seats: 22,
       details: ["City bike", "Helmet included", "Unlimited rides"],
-      link: "https://www.nextbike.net/",
+      site: "Nextbike",
     },
     {
       provider: "Bird",
@@ -170,7 +234,7 @@ const resultsByCategory = {
       rating: 4.0,
       seats: 15,
       details: ["E-scooter", "50 km range", "Dockless pickup"],
-      link: "https://www.bird.co/",
+      site: "Bird",
     },
     {
       provider: "Mobike",
@@ -179,7 +243,7 @@ const resultsByCategory = {
       rating: 4.1,
       seats: 18,
       details: ["Smart lock", "City zone map", "24/7 support"],
-      link: "https://mobike.com/",
+      site: "Mobike",
     },
   ],
   "Combined transport": [
@@ -190,7 +254,7 @@ const resultsByCategory = {
       rating: 4.4,
       seats: 9,
       details: ["Train + bus", "1 change", "Cheapest fare"],
-      link: "https://www.omio.com/",
+      site: "Omio",
     },
     {
       provider: "Rome2Rio",
@@ -199,7 +263,7 @@ const resultsByCategory = {
       rating: 4.3,
       seats: 6,
       details: ["Flight + rail", "Fastest route", "Flexible timing"],
-      link: "https://www.rome2rio.com/",
+      site: "Rome2Rio",
     },
     {
       provider: "12Go",
@@ -208,7 +272,7 @@ const resultsByCategory = {
       rating: 4.2,
       seats: 11,
       details: ["Bus + ferry", "2 changes", "Low cost"],
-      link: "https://12go.asia/",
+      site: "12Go",
     },
   ],
   Accommodations: [
@@ -219,7 +283,7 @@ const resultsByCategory = {
       rating: 4.5,
       seats: 6,
       details: ["4★ boutique hotel", "Free cancellation", "Breakfast included"],
-      link: "https://www.booking.com/",
+      site: "Booking.com",
     },
     {
       provider: "Airbnb",
@@ -228,7 +292,7 @@ const resultsByCategory = {
       rating: 4.7,
       seats: 4,
       details: ["2-bedroom apartment", "Self check-in", "Kitchen + laundry"],
-      link: "https://www.airbnb.com/",
+      site: "Airbnb",
     },
     {
       provider: "Hipcamp",
@@ -237,12 +301,40 @@ const resultsByCategory = {
       rating: 4.6,
       seats: 8,
       details: ["Eco campsite", "Pet friendly", "Parking included"],
-      link: "https://www.hipcamp.com/",
+      site: "Hipcamp",
     },
   ],
 };
 
 const formatDuration = (duration) => `Estimated duration: ${duration}`;
+const destinationInput = document.querySelector("#destination");
+
+const slugifyProvider = (provider) =>
+  provider
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "")
+    .trim();
+
+const buildProviderLink = (provider, category, destination) => {
+  const encodedDestination = encodeURIComponent(destination);
+  const builder = providerLinkBuilders[provider];
+  if (builder) return builder(encodedDestination);
+  const encodedCategory = encodeURIComponent(category);
+  return `https://www.${slugifyProvider(
+    provider
+  )}.com/?category=${encodedCategory}&destination=${encodedDestination}`;
+};
+
+const getCityMatch = (value) => {
+  const query = value.trim().toLowerCase();
+  if (query.length < 2) return null;
+  return (
+    citySuggestions.find((city) =>
+      city.toLowerCase().startsWith(query)
+    ) || null
+  );
+};
 
 const renderResults = (category, destination, travelers) => {
   const baseResults = resultsByCategory[category] || [];
@@ -271,7 +363,11 @@ const renderResults = (category, destination, travelers) => {
       <ul>
         ${result.details.map((detail) => `<li>${detail}</li>`).join("")}
       </ul>
-      <a href="${result.link}" target="_blank" rel="noreferrer">Open provider</a>
+      <a href="${buildProviderLink(
+        result.site,
+        category,
+        destination
+      )}" target="_blank" rel="noreferrer">Open provider</a>
     `;
     resultsGrid.appendChild(card);
   });
@@ -287,11 +383,18 @@ const hideLoading = () => {
   loadingOverlay.setAttribute("aria-hidden", "true");
 };
 
+destinationInput.addEventListener("input", (event) => {
+  const match = getCityMatch(event.target.value);
+  if (match && match.length > event.target.value.length) {
+    event.target.value = match;
+  }
+});
+
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const category = document.querySelector("#category").value;
   const travelers = Number(document.querySelector("#travelers").value);
-  const destination = document.querySelector("#destination").value.trim();
+  const destination = destinationInput.value.trim();
 
   if (!category || !destination) return;
 
@@ -305,9 +408,8 @@ searchForm.addEventListener("submit", (event) => {
 sortBy.addEventListener("change", () => {
   const category = document.querySelector("#category").value || "Flights";
   const travelers = Number(document.querySelector("#travelers").value) || 1;
-  const destination =
-    document.querySelector("#destination").value.trim() || "Paris";
+  const destination = destinationInput.value.trim() || "Paris, France";
   renderResults(category, destination, travelers);
 });
 
-renderResults("Flights", "Paris", 2);
+renderResults("Flights", "Paris, France", 2);
