@@ -299,13 +299,23 @@ const slugifyProvider = (provider) =>
     .replace(/[^a-z0-9]+/g, "")
     .trim();
 
-const buildProviderLink = (provider, category, destination, adults, children, dates) => {
+const buildProviderLink = (
+  provider,
+  category,
+  origin,
+  destination,
+  adults,
+  children,
+  dates
+) => {
   const encodedDestination = encodeURIComponent(destination);
+  const encodedOrigin = encodeURIComponent(origin);
   const builder = providerLinkBuilders[provider];
   if (builder) {
     const baseLink = builder(encodedDestination);
     const params = new URLSearchParams();
     params.set("category", category);
+    params.set("origin", origin);
     params.set("destination", destination);
     if (dates) params.set("dates", dates);
     if (adults) params.set("adults", String(adults));
@@ -315,11 +325,12 @@ const buildProviderLink = (provider, category, destination, adults, children, da
   const encodedCategory = encodeURIComponent(category);
   return `https://www.${slugifyProvider(
     provider
-  )}.com/?category=${encodedCategory}&destination=${encodedDestination}`;
+  )}.com/?category=${encodedCategory}&origin=${encodedOrigin}&destination=${encodedDestination}`;
 };
 
 const getResultsForRequest = ({
   category,
+  origin,
   destination,
   adults,
   children,
@@ -357,6 +368,7 @@ const getResultsForRequest = ({
     link: buildProviderLink(
       result.site,
       result.category,
+      origin,
       destination,
       adults,
       children,
@@ -388,6 +400,7 @@ const server = http.createServer((req, res) => {
 
   if (requestUrl.pathname === "/api/search") {
     const category = requestUrl.searchParams.get("category");
+    const origin = requestUrl.searchParams.get("origin");
     const destination = requestUrl.searchParams.get("destination");
     const adults = Number(requestUrl.searchParams.get("adults") || 0);
     const children = Number(requestUrl.searchParams.get("children") || 0);
@@ -397,14 +410,15 @@ const server = http.createServer((req, res) => {
     const pageSize = Number(requestUrl.searchParams.get("pageSize") || 6);
     const sort = requestUrl.searchParams.get("sort") || "price";
 
-    if (!category || !destination) {
+    if (!category || !origin || !destination) {
       res.writeHead(400, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ error: "category and destination are required" }));
+      res.end(JSON.stringify({ error: "category, origin, and destination are required" }));
       return;
     }
 
     const payload = getResultsForRequest({
       category,
+      origin,
       destination,
       adults,
       children,

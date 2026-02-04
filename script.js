@@ -28,9 +28,11 @@ const destinationInput = document.querySelector("#destination");
 const adultsInput = document.querySelector("#adults");
 const childrenInput = document.querySelector("#children");
 const datesInput = document.querySelector("#dates");
+const originInput = document.querySelector("#origin");
 const showAllInput = document.querySelector("#showAll");
 const resultsState = {
   category: "Flights",
+  origin: "London, United Kingdom",
   destination: "Paris, France",
   travelers: 2,
   showAll: false,
@@ -52,15 +54,24 @@ const getCityMatch = (value) => {
   );
 };
 
-const updateResultsSummary = (category, destination, travelers, showAll, total, page, pageCount) => {
+const updateResultsSummary = (
+  category,
+  origin,
+  destination,
+  travelers,
+  showAll,
+  total,
+  page,
+  pageCount
+) => {
   const categoryLabel = showAll ? "All categories" : category;
-  resultsSummary.textContent = `${categoryLabel} results for ${destination} • ${
+  resultsSummary.textContent = `${categoryLabel} results for ${origin} → ${destination} • ${
     travelers
   } traveler${travelers === 1 ? "" : "s"} • ${total} options`;
   pageIndicator.textContent = `Page ${page} of ${pageCount || 1}`;
 };
 
-const renderResults = (destination, travelers, showAll, payload) => {
+const renderResults = (origin, destination, travelers, showAll, payload) => {
   resultsGrid.innerHTML = "";
   payload.results.forEach((result) => {
     const card = document.createElement("div");
@@ -68,7 +79,7 @@ const renderResults = (destination, travelers, showAll, payload) => {
     card.innerHTML = `
       <h3>${result.provider}</h3>
       <div class="price">$${result.price}</div>
-      <div class="meta">${result.category} to ${destination}</div>
+      <div class="meta">${result.category} from ${origin} to ${destination}</div>
       <div class="meta">${formatDuration(result.duration)}</div>
       <div class="meta">Rating: ${result.rating} ★</div>
       <div class="meta">Seats left for ${travelers}: ${Math.max(
@@ -84,6 +95,7 @@ const renderResults = (destination, travelers, showAll, payload) => {
   });
   updateResultsSummary(
     resultsState.category,
+    origin,
     destination,
     travelers,
     showAll,
@@ -115,6 +127,7 @@ destinationInput.addEventListener("input", (event) => {
 
 const buildSearchParams = ({
   category,
+  origin,
   destination,
   adults,
   children,
@@ -125,6 +138,7 @@ const buildSearchParams = ({
 }) => {
   const params = new URLSearchParams();
   params.set("category", category);
+  params.set("origin", origin);
   params.set("destination", destination);
   params.set("adults", String(adults));
   params.set("children", String(children));
@@ -138,6 +152,7 @@ const buildSearchParams = ({
 const parseSearchParams = () => {
   const params = new URLSearchParams(window.location.search);
   const category = params.get("category");
+  const origin = params.get("origin");
   const destination = params.get("destination");
   const adults = Number(params.get("adults") || 0);
   const children = Number(params.get("children") || 0);
@@ -145,8 +160,8 @@ const parseSearchParams = () => {
   const showAll = params.get("showAll") === "true";
   const page = Number(params.get("page") || 1);
   const sort = params.get("sort") || "price";
-  if (!category || !destination) return null;
-  return { category, destination, adults, children, dates, showAll, page, sort };
+  if (!category || !origin || !destination) return null;
+  return { category, origin, destination, adults, children, dates, showAll, page, sort };
 };
 
 const openResultsInNewTab = (params) => {
@@ -154,9 +169,19 @@ const openResultsInNewTab = (params) => {
   window.open(url, "_blank", "noopener,noreferrer");
 };
 
-const fetchResults = async ({ category, destination, adults, children, dates, showAll, page }) => {
+const fetchResults = async ({
+  category,
+  origin,
+  destination,
+  adults,
+  children,
+  dates,
+  showAll,
+  page,
+}) => {
   const params = buildSearchParams({
     category,
+    origin,
     destination,
     adults,
     children,
@@ -178,6 +203,7 @@ const loadResults = async ({ page }) => {
     showLoading();
     const payload = await fetchResults({
       category: resultsState.category,
+      origin: resultsState.origin,
       destination: resultsState.destination,
       adults: resultsState.adults,
       children: resultsState.children,
@@ -185,10 +211,19 @@ const loadResults = async ({ page }) => {
       showAll: resultsState.showAll,
       page,
     });
-    renderResults(resultsState.destination, resultsState.travelers, resultsState.showAll, payload);
+    renderResults(
+      resultsState.origin,
+      resultsState.destination,
+      resultsState.travelers,
+      resultsState.showAll,
+      payload
+    );
   } catch (error) {
-    resultsSummary.textContent = "Unable to load results. Please try again.";
+    resultsSummary.textContent =
+      "Unable to load results. Start the local API with \"node server.js\" and refresh.";
     resultsGrid.innerHTML = "";
+    prevPageButton.disabled = true;
+    nextPageButton.disabled = true;
   } finally {
     hideLoading();
   }
@@ -207,16 +242,24 @@ searchForm.addEventListener("submit", (event) => {
   const category = document.querySelector("#category").value;
   const adults = Number(adultsInput.value);
   const children = Number(childrenInput.value);
+  const origin = originInput.value.trim();
   const destination = destinationInput.value.trim();
   const dates = datesInput.value.trim();
   const showAll = showAllInput.checked;
 
-  if (!category || !destination || Number.isNaN(adults) || Number.isNaN(children)) {
+  if (
+    !category ||
+    !origin ||
+    !destination ||
+    Number.isNaN(adults) ||
+    Number.isNaN(children)
+  ) {
     return;
   }
 
   const travelers = adults + children;
   resultsState.category = category;
+  resultsState.origin = origin;
   resultsState.destination = destination;
   resultsState.travelers = travelers;
   resultsState.showAll = showAll;
@@ -227,6 +270,7 @@ searchForm.addEventListener("submit", (event) => {
   resultsState.page = 1;
   const params = buildSearchParams({
     category,
+    origin,
     destination,
     adults,
     children,
@@ -245,10 +289,12 @@ sortBy.addEventListener("change", () => {
   const category = document.querySelector("#category").value || "Flights";
   const adults = Number(adultsInput.value) || 1;
   const children = Number(childrenInput.value) || 0;
+  const origin = originInput.value.trim() || "London, United Kingdom";
   const destination = destinationInput.value.trim() || "Paris, France";
   const dates = datesInput.value.trim();
   const showAll = showAllInput.checked;
   resultsState.category = category;
+  resultsState.origin = origin;
   resultsState.destination = destination;
   resultsState.travelers = adults + children;
   resultsState.showAll = showAll;
@@ -262,15 +308,18 @@ sortBy.addEventListener("change", () => {
 
 const seededSearch = parseSearchParams();
 if (seededSearch) {
-  const { category, destination, adults, children, dates, showAll, page, sort } = seededSearch;
+  const { category, origin, destination, adults, children, dates, showAll, page, sort } =
+    seededSearch;
   document.querySelector("#category").value = category;
   adultsInput.value = String(adults || 1);
   childrenInput.value = String(children || 0);
+  originInput.value = origin;
   destinationInput.value = destination;
   datesInput.value = dates;
   showAllInput.checked = showAll;
   sortBy.value = sort;
   resultsState.category = category;
+  resultsState.origin = origin;
   resultsState.destination = destination;
   resultsState.travelers = adults + children;
   resultsState.showAll = showAll;
