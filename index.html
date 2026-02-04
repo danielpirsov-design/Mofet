@@ -51,8 +51,19 @@
                 </select>
               </label>
               <label>
-                Travelers
-                <input id="travelers" type="number" min="1" max="12" value="2" required />
+                Adults
+                <input id="adults" type="number" min="1" max="12" value="2" required />
+              </label>
+              <label>
+                Children
+                <input
+                  id="children"
+                  type="number"
+                  min="0"
+                  max="8"
+                  value="0"
+                  required
+                />
               </label>
               <label>
                 Travel dates
@@ -67,6 +78,10 @@
                   list="citySuggestions"
                   required
                 />
+              </label>
+              <label class="checkbox-field">
+                <input id="showAll" type="checkbox" />
+                Show all categories in results
               </label>
               <datalist id="citySuggestions">
                 <option value="Paris, France"></option>

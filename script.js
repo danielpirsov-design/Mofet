@@ -308,6 +308,9 @@ const resultsByCategory = {
 
 const formatDuration = (duration) => `Estimated duration: ${duration}`;
 const destinationInput = document.querySelector("#destination");
+const adultsInput = document.querySelector("#adults");
+const childrenInput = document.querySelector("#children");
+const showAllInput = document.querySelector("#showAll");
 
 const slugifyProvider = (provider) =>
   provider
@@ -336,8 +339,15 @@ const getCityMatch = (value) => {
   );
 };
 
-const renderResults = (category, destination, travelers) => {
-  const baseResults = resultsByCategory[category] || [];
+const renderResults = (category, destination, travelers, showAll) => {
+  const baseResults = showAll
+    ? Object.entries(resultsByCategory).flatMap(([group, items]) =>
+        items.map((item) => ({ ...item, category: group }))
+      )
+    : (resultsByCategory[category] || []).map((item) => ({
+        ...item,
+        category,
+      }));
   const sortedResults = [...baseResults].sort((a, b) => {
     if (sortBy.value === "price") return a.price - b.price;
     if (sortBy.value === "duration") {
@@ -353,7 +363,7 @@ const renderResults = (category, destination, travelers) => {
     card.innerHTML = `
       <h3>${result.provider}</h3>
       <div class="price">$${result.price}</div>
-      <div class="meta">${category} to ${destination}</div>
+      <div class="meta">${result.category} to ${destination}</div>
       <div class="meta">${formatDuration(result.duration)}</div>
       <div class="meta">Rating: ${result.rating} ★</div>
       <div class="meta">Seats left for ${travelers}: ${Math.max(
@@ -365,7 +375,7 @@ const renderResults = (category, destination, travelers) => {
       </ul>
       <a href="${buildProviderLink(
         result.site,
-        category,
+        result.category,
         destination
       )}" target="_blank" rel="noreferrer">Open provider</a>
     `;
@@ -390,26 +400,78 @@ destinationInput.addEventListener("input", (event) => {
   }
 });
 
+const buildSearchParams = ({ category, destination, adults, children, showAll }) => {
+  const params = new URLSearchParams();
+  params.set("category", category);
+  params.set("destination", destination);
+  params.set("adults", String(adults));
+  params.set("children", String(children));
+  if (showAll) params.set("showAll", "true");
+  return params;
+};
+
+const parseSearchParams = () => {
+  const params = new URLSearchParams(window.location.search);
+  const category = params.get("category");
+  const destination = params.get("destination");
+  const adults = Number(params.get("adults") || 0);
+  const children = Number(params.get("children") || 0);
+  const showAll = params.get("showAll") === "true";
+  if (!category || !destination) return null;
+  return { category, destination, adults, children, showAll };
+};
+
+const openResultsInNewTab = (params) => {
+  const url = `${window.location.pathname}?${params.toString()}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+};
+
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const category = document.querySelector("#category").value;
-  const travelers = Number(document.querySelector("#travelers").value);
+  const adults = Number(adultsInput.value);
+  const children = Number(childrenInput.value);
   const destination = destinationInput.value.trim();
+  const showAll = showAllInput.checked;
 
-  if (!category || !destination) return;
+  if (!category || !destination || Number.isNaN(adults) || Number.isNaN(children)) {
+    return;
+  }
 
   showLoading();
+  const travelers = adults + children;
+  const params = buildSearchParams({
+    category,
+    destination,
+    adults,
+    children,
+    showAll,
+  });
   setTimeout(() => {
     hideLoading();
-    renderResults(category, destination, travelers);
+    renderResults(category, destination, travelers, showAll);
+    openResultsInNewTab(params);
   }, 1600);
 });
 
 sortBy.addEventListener("change", () => {
   const category = document.querySelector("#category").value || "Flights";
-  const travelers = Number(document.querySelector("#travelers").value) || 1;
+  const adults = Number(adultsInput.value) || 1;
+  const children = Number(childrenInput.value) || 0;
   const destination = destinationInput.value.trim() || "Paris, France";
-  renderResults(category, destination, travelers);
+  const showAll = showAllInput.checked;
+  renderResults(category, destination, adults + children, showAll);
 });
 
-renderResults("Flights", "Paris, France", 2);
+const seededSearch = parseSearchParams();
+if (seededSearch) {
+  const { category, destination, adults, children, showAll } = seededSearch;
+  document.querySelector("#category").value = category;
+  adultsInput.value = String(adults || 1);
+  childrenInput.value = String(children || 0);
+  destinationInput.value = destination;
+  showAllInput.checked = showAll;
+  renderResults(category, destination, adults + children, showAll);
+} else {
+  renderResults("Flights", "Paris, France", 2, false);
+}
