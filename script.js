@@ -1,7 +1,11 @@
 const searchForm = document.querySelector("#searchForm");
 const resultsGrid = document.querySelector("#resultsGrid");
+const resultsSummary = document.querySelector("#resultsSummary");
 const sortBy = document.querySelector("#sortBy");
 const loadingOverlay = document.querySelector("#loadingOverlay");
+const prevPageButton = document.querySelector("#prevPage");
+const nextPageButton = document.querySelector("#nextPage");
+const pageIndicator = document.querySelector("#pageIndicator");
 
 const citySuggestions = [
   "Paris, France",
@@ -310,7 +314,19 @@ const formatDuration = (duration) => `Estimated duration: ${duration}`;
 const destinationInput = document.querySelector("#destination");
 const adultsInput = document.querySelector("#adults");
 const childrenInput = document.querySelector("#children");
+const datesInput = document.querySelector("#dates");
 const showAllInput = document.querySelector("#showAll");
+const resultsState = {
+  category: "Flights",
+  destination: "Paris, France",
+  travelers: 2,
+  showAll: false,
+  page: 1,
+  pageSize: 6,
+  adults: 2,
+  children: 0,
+  dates: "",
+};
 
 const slugifyProvider = (provider) =>
   provider
@@ -319,10 +335,19 @@ const slugifyProvider = (provider) =>
     .replace(/[^a-z0-9]+/g, "")
     .trim();
 
-const buildProviderLink = (provider, category, destination) => {
+const buildProviderLink = (provider, category, destination, adults, children, dates) => {
   const encodedDestination = encodeURIComponent(destination);
   const builder = providerLinkBuilders[provider];
-  if (builder) return builder(encodedDestination);
+  if (builder) {
+    const baseLink = builder(encodedDestination);
+    const params = new URLSearchParams();
+    params.set("category", category);
+    params.set("destination", destination);
+    if (dates) params.set("dates", dates);
+    if (adults) params.set("adults", String(adults));
+    if (children) params.set("children", String(children));
+    return `${baseLink}${baseLink.includes("?") ? "&" : "?"}${params.toString()}`;
+  }
   const encodedCategory = encodeURIComponent(category);
   return `https://www.${slugifyProvider(
     provider
@@ -339,7 +364,15 @@ const getCityMatch = (value) => {
   );
 };
 
-const renderResults = (category, destination, travelers, showAll) => {
+const updateResultsSummary = (category, destination, travelers, showAll, total, page, pageCount) => {
+  const categoryLabel = showAll ? "All categories" : category;
+  resultsSummary.textContent = `${categoryLabel} results for ${destination} • ${
+    travelers
+  } traveler${travelers === 1 ? "" : "s"} • ${total} options`;
+  pageIndicator.textContent = `Page ${page} of ${pageCount || 1}`;
+};
+
+const renderResults = (category, destination, travelers, showAll, page, pageSize) => {
   const baseResults = showAll
     ? Object.entries(resultsByCategory).flatMap(([group, items]) =>
         items.map((item) => ({ ...item, category: group }))
@@ -355,9 +388,14 @@ const renderResults = (category, destination, travelers, showAll) => {
     }
     return b.rating - a.rating;
   });
+  const total = sortedResults.length;
+  const pageCount = Math.max(Math.ceil(total / pageSize), 1);
+  const currentPage = Math.min(Math.max(page, 1), pageCount);
+  const startIndex = (currentPage - 1) * pageSize;
+  const pagedResults = sortedResults.slice(startIndex, startIndex + pageSize);
 
   resultsGrid.innerHTML = "";
-  sortedResults.forEach((result) => {
+  pagedResults.forEach((result) => {
     const card = document.createElement("div");
     card.className = "result-card";
     card.innerHTML = `
@@ -376,11 +414,18 @@ const renderResults = (category, destination, travelers, showAll) => {
       <a href="${buildProviderLink(
         result.site,
         result.category,
-        destination
+        destination,
+        resultsState.adults,
+        resultsState.children,
+        resultsState.dates
       )}" target="_blank" rel="noreferrer">Open provider</a>
     `;
     resultsGrid.appendChild(card);
   });
+  updateResultsSummary(category, destination, travelers, showAll, total, currentPage, pageCount);
+  prevPageButton.disabled = currentPage <= 1;
+  nextPageButton.disabled = currentPage >= pageCount;
+  resultsState.page = currentPage;
 };
 
 const showLoading = () => {
@@ -400,13 +445,23 @@ destinationInput.addEventListener("input", (event) => {
   }
 });
 
-const buildSearchParams = ({ category, destination, adults, children, showAll }) => {
+const buildSearchParams = ({
+  category,
+  destination,
+  adults,
+  children,
+  dates,
+  showAll,
+  page,
+}) => {
   const params = new URLSearchParams();
   params.set("category", category);
   params.set("destination", destination);
   params.set("adults", String(adults));
   params.set("children", String(children));
+  if (dates) params.set("dates", dates);
   if (showAll) params.set("showAll", "true");
+  if (page) params.set("page", String(page));
   return params;
 };
 
@@ -416,9 +471,11 @@ const parseSearchParams = () => {
   const destination = params.get("destination");
   const adults = Number(params.get("adults") || 0);
   const children = Number(params.get("children") || 0);
+  const dates = params.get("dates") || "";
   const showAll = params.get("showAll") === "true";
+  const page = Number(params.get("page") || 1);
   if (!category || !destination) return null;
-  return { category, destination, adults, children, showAll };
+  return { category, destination, adults, children, dates, showAll, page };
 };
 
 const openResultsInNewTab = (params) => {
@@ -426,12 +483,35 @@ const openResultsInNewTab = (params) => {
   window.open(url, "_blank", "noopener,noreferrer");
 };
 
+prevPageButton.addEventListener("click", () => {
+  renderResults(
+    resultsState.category,
+    resultsState.destination,
+    resultsState.travelers,
+    resultsState.showAll,
+    resultsState.page - 1,
+    resultsState.pageSize
+  );
+});
+
+nextPageButton.addEventListener("click", () => {
+  renderResults(
+    resultsState.category,
+    resultsState.destination,
+    resultsState.travelers,
+    resultsState.showAll,
+    resultsState.page + 1,
+    resultsState.pageSize
+  );
+});
+
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const category = document.querySelector("#category").value;
   const adults = Number(adultsInput.value);
   const children = Number(childrenInput.value);
   const destination = destinationInput.value.trim();
+  const dates = datesInput.value.trim();
   const showAll = showAllInput.checked;
 
   if (!category || !destination || Number.isNaN(adults) || Number.isNaN(children)) {
@@ -440,16 +520,26 @@ searchForm.addEventListener("submit", (event) => {
 
   showLoading();
   const travelers = adults + children;
+  resultsState.category = category;
+  resultsState.destination = destination;
+  resultsState.travelers = travelers;
+  resultsState.showAll = showAll;
+  resultsState.adults = adults;
+  resultsState.children = children;
+  resultsState.dates = dates;
+  resultsState.page = 1;
   const params = buildSearchParams({
     category,
     destination,
     adults,
     children,
+    dates,
     showAll,
+    page: 1,
   });
   setTimeout(() => {
     hideLoading();
-    renderResults(category, destination, travelers, showAll);
+    renderResults(category, destination, travelers, showAll, 1, resultsState.pageSize);
     openResultsInNewTab(params);
   }, 1600);
 });
@@ -459,19 +549,57 @@ sortBy.addEventListener("change", () => {
   const adults = Number(adultsInput.value) || 1;
   const children = Number(childrenInput.value) || 0;
   const destination = destinationInput.value.trim() || "Paris, France";
+  const dates = datesInput.value.trim();
   const showAll = showAllInput.checked;
-  renderResults(category, destination, adults + children, showAll);
+  resultsState.category = category;
+  resultsState.destination = destination;
+  resultsState.travelers = adults + children;
+  resultsState.showAll = showAll;
+  resultsState.adults = adults;
+  resultsState.children = children;
+  resultsState.dates = dates;
+  renderResults(
+    category,
+    destination,
+    adults + children,
+    showAll,
+    resultsState.page,
+    resultsState.pageSize
+  );
 });
 
 const seededSearch = parseSearchParams();
 if (seededSearch) {
-  const { category, destination, adults, children, showAll } = seededSearch;
+  const { category, destination, adults, children, dates, showAll, page } = seededSearch;
   document.querySelector("#category").value = category;
   adultsInput.value = String(adults || 1);
   childrenInput.value = String(children || 0);
   destinationInput.value = destination;
+  datesInput.value = dates;
   showAllInput.checked = showAll;
-  renderResults(category, destination, adults + children, showAll);
+  resultsState.category = category;
+  resultsState.destination = destination;
+  resultsState.travelers = adults + children;
+  resultsState.showAll = showAll;
+  resultsState.adults = adults;
+  resultsState.children = children;
+  resultsState.dates = dates;
+  resultsState.page = page;
+  renderResults(
+    category,
+    destination,
+    adults + children,
+    showAll,
+    page,
+    resultsState.pageSize
+  );
 } else {
-  renderResults("Flights", "Paris, France", 2, false);
+  renderResults(
+    resultsState.category,
+    resultsState.destination,
+    resultsState.travelers,
+    resultsState.showAll,
+    resultsState.page,
+    resultsState.pageSize
+  );
 }
