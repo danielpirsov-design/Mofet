@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mofet Travel Finder</title>
+    <title>Mofet — Smart Travel Search &amp; Price Comparison</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -11,15 +11,16 @@
       <header class="hero">
         <nav class="nav">
           <div class="brand">Mofet</div>
-          <button class="primary-button">Start Searching</button>
+          <a class="primary-button" href="#search">Start Searching</a>
         </nav>
         <div class="hero-content">
           <div>
             <p class="eyebrow">One search. Every route.</p>
-            <h1>Compare prices across every travel category in one place.</h1>
+            <h1>Smart travel search &amp; price comparison — all in one platform.</h1>
             <p class="subhead">
-              Flights, trains, buses, car rentals, ferries, bikes, and stays — all
-              grouped together with clear pricing and availability.
+              Mofet connects directly to official provider APIs (never Google APIs)
+              to surface live pricing for air, rail, road, sea, micromobility, and
+              accommodations — with clean, professional results you can trust.
             </p>
             <div class="hero-tags">
               <span>✈️ Flights</span>
@@ -27,11 +28,12 @@
               <span>🚌 Buses</span>
               <span>🚗 Car rentals</span>
               <span>⛴️ Ferries</span>
-              <span>🚲 Bikes</span>
-              <span>🏡 BNB stays</span>
+              <span>🚲 Bikes &amp; micro-mobility</span>
+              <span>🏡 Stays</span>
+              <span>🧭 Multimodal</span>
             </div>
           </div>
-          <div class="hero-card">
+          <div id="search" class="hero-card">
             <h2>Search now</h2>
             <p>Pick a category, travelers, and a destination to start comparing.</p>
             <form id="searchForm" class="search-form">
@@ -44,13 +46,18 @@
                   <option value="Buses">Buses</option>
                   <option value="Car rentals">Car rentals</option>
                   <option value="Ferries">Ferries</option>
-                  <option value="Bikes">Bikes</option>
-                  <option value="BNB stays">BNB stays</option>
+                  <option value="Bikes & micro-mobility">Bikes &amp; micro-mobility</option>
+                  <option value="Stays">Stays</option>
+                  <option value="Multimodal">All-in-one multimodal</option>
                 </select>
               </label>
               <label>
                 Travelers
                 <input id="travelers" type="number" min="1" max="12" value="2" required />
+              </label>
+              <label>
+                Origin
+                <input id="origin" type="text" placeholder="e.g. Amsterdam" required />
               </label>
               <label>
                 Destination
@@ -61,6 +68,10 @@
                   required
                 />
               </label>
+              <label>
+                Dates
+                <input id="dates" type="text" placeholder="Flexible dates or fixed range" />
+              </label>
               <button class="primary-button" type="submit">Find deals</button>
             </form>
           </div>
@@ -68,11 +79,26 @@
       </header>
 
       <main>
+        <section class="pillars">
+          <article>
+            <h3>Official provider connections</h3>
+            <p>We connect to airline, rail, ferry, and mobility APIs directly for verified pricing.</p>
+          </article>
+          <article>
+            <h3>Open external links</h3>
+            <p>Jump out to any operator or booking partner for full details and checkout.</p>
+          </article>
+          <article>
+            <h3>Professional-grade filters</h3>
+            <p>Slice results by price, time, baggage, cancellation policies, and more.</p>
+          </article>
+        </section>
+
         <section class="results">
           <div class="results-header">
             <div>
               <h2>Live comparison</h2>
-              <p>We aggregate the best options and show the full breakdown.</p>
+              <p>We aggregate the best options and show the full breakdown in one clean view.</p>
             </div>
             <div class="filter">
               <label>
@@ -88,20 +114,155 @@
           <div id="resultsGrid" class="results-grid"></div>
         </section>
 
+        <section class="filters">
+          <h2>Advanced filters, tailored to every category</h2>
+          <p class="section-subhead">
+            Mofet offers professional filtering for every travel type — from flexible
+            cancellations to seat preferences and sustainability.
+          </p>
+          <div class="filters-grid">
+            <article>
+              <h3>Flights</h3>
+              <ul>
+                <li>Price range, departure/arrival time, duration, direct or connecting flights.</li>
+                <li>Included baggage, travel class, airline, airports.</li>
+                <li>Flexible cancellation/changes, passenger ratings.</li>
+              </ul>
+            </article>
+            <article>
+              <h3>Trains</h3>
+              <ul>
+                <li>Ticket price, departure time, trip duration, train and seat type.</li>
+                <li>Origin/destination stations, free cancellation, Wi-Fi.</li>
+                <li>Service ratings.</li>
+              </ul>
+            </article>
+            <article>
+              <h3>Buses</h3>
+              <ul>
+                <li>Price, departure time, trip duration, reserved seating.</li>
+                <li>Air conditioning, station/location, cancellation options.</li>
+                <li>Baggage and passenger ratings.</li>
+              </ul>
+            </article>
+            <article>
+              <h3>Car rentals</h3>
+              <ul>
+                <li>Vehicle type, price per day, pick-up &amp; drop-off location.</li>
+                <li>Fuel type, transmission, passenger capacity, trunk space.</li>
+                <li>Included insurance, free cancellation, company rating.</li>
+              </ul>
+            </article>
+            <article>
+              <h3>Bikes &amp; micro-mobility</h3>
+              <ul>
+                <li>Vehicle type (bike, e-bike, scooter), price per hour/day.</li>
+                <li>Battery range, rental area, helmet availability.</li>
+                <li>Short/long-term rental options, user ratings.</li>
+              </ul>
+            </article>
+            <article>
+              <h3>Ferries</h3>
+              <ul>
+                <li>Price, departure time, sailing duration, vessel type.</li>
+                <li>Seat or cabin, vehicle boarding, ports.</li>
+                <li>Cancellation options and passenger ratings.</li>
+              </ul>
+            </article>
+            <article>
+              <h3>All-in-one multimodal</h3>
+              <ul>
+                <li>Transport types, lowest price, fastest route.</li>
+                <li>Number of transfers, origin/destination.</li>
+                <li>Flexible options for timing and ticketing.</li>
+              </ul>
+            </article>
+            <article>
+              <h3>Accommodations</h3>
+              <ul>
+                <li>Price per night, location, accommodation type, guests.</li>
+                <li>Bedrooms/bathrooms, guest &amp; star rating, free cancellation.</li>
+                <li>Pay now/later, flexible check-in/out, Wi-Fi, AC, kitchen.</li>
+                <li>Breakfast, washing machine, parking, pool, accessibility.</li>
+                <li>Pet-friendly, self check-in, family/business/eco-friendly options.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="partners">
+          <h2>Connected providers &amp; comparison partners</h2>
+          <p class="section-subhead">
+            We integrate official APIs from leading providers and trusted comparison platforms.
+          </p>
+          <div class="partners-grid">
+            <div>
+              <h4>Airlines</h4>
+              <p>
+                Emirates, Qatar Airways, Lufthansa, Air France, KLM, British Airways,
+                Turkish Airlines, Delta Air Lines, American Airlines, United Airlines,
+                Ryanair, EasyJet, Wizz Air, Singapore Airlines, ANA, Cathay Pacific.
+              </p>
+            </div>
+            <div>
+              <h4>Rail</h4>
+              <p>
+                Deutsche Bahn, SNCF/TGV, Eurostar, Trenitalia, Renfe, SBB,
+                JR Group, Amtrak, VIA Rail, China Railway.
+              </p>
+            </div>
+            <div>
+              <h4>Buses</h4>
+              <p>
+                FlixBus, Greyhound, Megabus, National Express, Eurolines,
+                BlaBlaCar Bus, RedCoach, Lux Express.
+              </p>
+            </div>
+            <div>
+              <h4>Car rentals</h4>
+              <p>
+                Hertz, Avis, Budget, Enterprise, Alamo, National, Sixt, Europcar,
+                Dollar, Thrifty.
+              </p>
+            </div>
+            <div>
+              <h4>Ferries</h4>
+              <p>
+                DFDS, Stena Line, Brittany Ferries, Tallink Silja Line, Viking Line,
+                Blue Star Ferries, Minoan Lines, Anek Lines, P&amp;O Ferries.
+              </p>
+            </div>
+            <div>
+              <h4>Micromobility</h4>
+              <p>
+                Lime, Bird, Tier, Dott, Nextbike, Citi Bike, Vélib’, Mobike.
+              </p>
+            </div>
+            <div>
+              <h4>Stays &amp; comparison</h4>
+              <p>
+                Expedia, Skyscanner, Kayak, Omio, Rome2Rio, 12Go, Booking.com,
+                Airbnb, Agoda, Hotels.com, Trivago, Trip.com, Priceline,
+                Hipcamp, Pitchup.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <section class="features">
           <h2>Why travelers love Mofet</h2>
           <div class="features-grid">
             <article>
-              <h3>All transport types</h3>
-              <p>See prices for rail, road, sea, and air in one unified feed.</p>
+              <h3>Unified travel marketplace</h3>
+              <p>Compare air, rail, road, sea, micromobility, and stays side-by-side.</p>
             </article>
             <article>
               <h3>Clear breakdowns</h3>
-              <p>Compare total costs, journey times, and provider ratings.</p>
+              <p>Compare total costs, journey times, baggage, and provider ratings.</p>
             </article>
             <article>
-              <h3>Fast availability</h3>
-              <p>Instantly see which options still have seats for your group.</p>
+              <h3>Trusted booking handoffs</h3>
+              <p>Open external links to official booking sites and trusted partners.</p>
             </article>
           </div>
         </section>
@@ -120,7 +281,7 @@
         ></video>
         <div>
           <h3>Searching every provider…</h3>
-          <p>We are gathering the freshest prices for you.</p>
+          <p>For longer searches, enjoy our custom 2D animation while we gather prices.</p>
         </div>
       </div>
     </div>
