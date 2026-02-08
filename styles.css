@@ -52,6 +52,10 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .primary-button:hover {
@@ -138,6 +142,25 @@ main {
   padding: 3rem 6vw 4rem;
 }
 
+.pillars {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: 3rem;
+}
+
+.pillars article {
+  background: var(--card);
+  padding: 1.6rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 12px 24px rgba(15, 45, 75, 0.05);
+}
+
+.pillars p {
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
 .results-header {
   display: flex;
   justify-content: space-between;
@@ -181,6 +204,97 @@ main {
 .result-card .meta {
   color: var(--muted);
   font-size: 0.9rem;
+}
+
+.result-card .actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+
+.link-button {
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(45, 148, 230, 0.3);
+  color: var(--primary-dark);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  background: #f1f9ff;
+}
+
+.link-button.secondary {
+  background: transparent;
+  border-color: rgba(13, 27, 42, 0.1);
+  color: var(--text);
+}
+
+.filters,
+.partners {
+  margin-top: 4rem;
+}
+
+.section-subhead {
+  color: var(--muted);
+  max-width: 48rem;
+  margin-top: 0.6rem;
+}
+
+.filters-grid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.filters-grid article {
+  background: var(--card);
+  padding: 1.6rem;
+  border-radius: 1rem;
+  box-shadow: 0 12px 24px rgba(15, 45, 75, 0.05);
+}
+
+.filters-grid h3 {
+  margin-bottom: 0.8rem;
+}
+
+.filters-grid ul {
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.filters-grid li::before {
+  content: "•";
+  color: var(--primary-dark);
+  margin-right: 0.6rem;
+}
+
+.partners-grid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.partners-grid div {
+  background: var(--card);
+  padding: 1.4rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(15, 45, 75, 0.05);
+}
+
+.partners-grid h4 {
+  margin-bottom: 0.6rem;
+  color: var(--primary-dark);
+}
+
+.partners-grid p {
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 .features {
